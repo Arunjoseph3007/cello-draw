@@ -1,9 +1,8 @@
 import { useRecoilState } from "recoil";
 import { elementsAtom } from "@/context/elements";
-import { useState } from "react";
 
-export const useArray = (defaultValue = []) => {
-  const [array, setArray] = useState(defaultValue);
+export const useArray = () => {
+  const [array, setArray] = useRecoilState(elementsAtom);
 
   const push = (element) => setArray((a) => [...a, element]);
 
@@ -24,10 +23,10 @@ export const useArray = (defaultValue = []) => {
   return {
     data: array,
     setData: setArray,
-    push,
-    filter,
-    update,
-    remove,
-    clear,
+    push: push,
+    filter: filter,
+    update: update,
+    remove: remove,
+    clear: clear,
   };
 };

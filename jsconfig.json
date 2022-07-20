@@ -5,7 +5,7 @@
       "@/components/*": ["src/components/*"],
       "@/hooks/*":["src/hooks/*"],
       "@/context/*":["src/contexts/*"],
-      "@/controllers/*":["src/controller/*"],
+      "@/controllers/*":["src/controllers/*"],
       "@/icons/*":["public/icons/*"]
     }
   }

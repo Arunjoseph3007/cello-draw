@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const engaged = atom({
+export const engagedAtom = atom({
   key: "engaged",
   default: 0,
 });

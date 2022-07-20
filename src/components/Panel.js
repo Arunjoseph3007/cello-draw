@@ -1,4 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+//contextx
+import { controllerAtom } from "@/context/controller";
+import { engagedAtom } from "@/context/engaed";
+import { newShapeAtom } from "@/context/newShape";
+// Libs
+import { useEffect, useRef } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 let position = {
   width: 600,
@@ -7,10 +13,11 @@ let position = {
   y: 0,
 };
 
-const Panel = ({ elements }) => {
+const Panel = ({ elements, mode }) => {
   // States
-  const [engaged, setEngaed] = useState(0);
-  const [newLine, setNewLine] = useState(null);
+  const [engaged, setEngaged] = useRecoilState(engagedAtom);
+  const controller = useRecoilValue(controllerAtom);
+  const [newShape, setNewShape] = useRecoilState(newShapeAtom);
   const canvasRef = useRef();
 
   // For setting the position
@@ -20,46 +27,43 @@ const Panel = ({ elements }) => {
   }, []);
 
   const handleMouseMove = (e) => {
-    if (!engaged) return;
-
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-    setNewLine((prev) => ({ ...prev, x2: x, y2: y }));
+    controller.onMouseMove({
+      e,
+      position,
+      newShape,
+      setNewShape,
+      elements,
+      engaged,
+      setEngaged,
+    });
   };
 
   const handleMouseDown = (e) => {
-    //Get the positon
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-
-    //For first touch
-    if (!engaged) {
-      setNewLine({ x1: x, y1: y, x2: x, y2: y });
-      setEngaed(true);
-    }
-
-    //For second touch
-    else {
-      elements.push({ ...newLine, x2: x, y2: y });
-      setEngaed(false);
-      setNewLine(null);
-    }
+    controller.onMouseDown({
+      e,
+      position,
+      newShape,
+      setNewShape,
+      elements,
+      engaged,
+      setEngaged,
+    });
   };
 
   return (
     <div
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
-      className="flex-1 debug w-full h-full dead-center bg-gray-300"
+      className="flex-1 w-full h-full dead-center bg-gray-300"
     >
-      <div
-        ref={canvasRef}
-        className="canvas bg-white"
-        style={position}
-      >
+      <div ref={canvasRef} className="canvas bg-white" style={position}>
         <svg {...position}>
           {elements.data.map((elm, i) => (
             <line key={i} {...elm} stroke="black" />
           ))}
-          {newLine && <line {...newLine} stroke="black" />}
+          {newShape && <line {...newShape} stroke="black" />}
         </svg>
       </div>
     </div>

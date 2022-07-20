@@ -4,13 +4,12 @@ import { modeAtom } from "./mode";
 import { LINE } from "@/controllers/line";
 import { CIRCLE } from "@/controllers/circle";
 
-const controller = { LINE, CIRCLE };
+const controllers = { LINE, CIRCLE };
 
 export const controllerAtom = selector({
-  key: "cotroller", 
+  key: "controller",
   get: ({ get }) => {
     const mode = get(modeAtom);
-
-    return controller[mode];
+    return controllers[mode];
   },
 });
