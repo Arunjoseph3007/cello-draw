@@ -1,7 +1,7 @@
-import { CircleIcon } from "../public/Icons/Circle";
-import { CurveIcon } from "../public/Icons/Curve";
-import { LineIcon } from "../public/Icons/Line";
-import { PolygonIcon } from "../public/Icons/Polygon";
+import { CircleIcon } from "../../public/Icons/Circle";
+import { CurveIcon } from "../../public/Icons/Curve";
+import { LineIcon } from "../../public/Icons/Line";
+import { PolygonIcon } from "../../public/Icons/Polygon";
 
 const Topbar = () => {
   return (

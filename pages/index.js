@@ -1,9 +1,9 @@
 import Head from "next/head";
-import Leftbar from "../components/Leftbar";
-import Panel from "../components/Panel";
-import Rightbar from "../components/Rightbar";
-import Topbar from "../components/Topbar";
-import { useArray } from "../Hooks/useArray";
+import Leftbar from "../src/components/Leftbar";
+import Panel from "../src/components/Panel";
+import Rightbar from "../src/components/Rightbar";
+import Topbar from "../src/components/Topbar";
+import { useArray } from "../src/Hooks/useArray";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
