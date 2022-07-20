@@ -1,3 +1,5 @@
+import { useRecoilState } from "recoil";
+import { elementsAtom } from "@/context/elements";
 import { useState } from "react";
 
 export const useArray = (defaultValue = []) => {
@@ -14,8 +16,8 @@ export const useArray = (defaultValue = []) => {
       ...a.slice(index + 1, a.length),
     ]);
 
-  const remove = (index) =>
-    setArray((a) => [...a.slice(0, index), ...a.slice(index + 1, a.length)]);
+  const remove = (i) =>
+    setArray((a) => [...a.slice(0, i), ...a.slice(i + 1, a.length)]);
 
   const clear = () => setArray([]);
 

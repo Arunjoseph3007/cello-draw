@@ -29,7 +29,6 @@ const Panel = ({ elements }) => {
   const handleMouseDown = (e) => {
     //Get the positon
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-    console.log({ x, y });
 
     //For first touch
     if (!engaged) {
