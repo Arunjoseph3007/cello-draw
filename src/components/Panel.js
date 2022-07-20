@@ -1,21 +1,23 @@
-import PreviousMap from "postcss/lib/previous-map";
 import { useEffect, useState, useRef } from "react";
-import { flushSync } from "react-dom";
+
+let position = {
+  width: 600,
+  height: 400,
+  x: 0,
+  y: 0,
+};
+
 const Panel = ({ elements }) => {
+  // States
   const [engaged, setEngaed] = useState(0);
   const [newLine, setNewLine] = useState(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const canvasRef = useRef();
 
+  // For setting the position
   useEffect(() => {
-    const rect = canvasRef.current.getBoundingClientRect();
-    setPosition({ x: rect.left, y: rect.top });
+    const { left, top } = canvasRef.current.getBoundingClientRect();
+    position = { ...position, x: left, y: top };
   }, []);
-
-  const dimensions = {
-    width: 600,
-    height: 400,
-  };
 
   const handleMouseMove = (e) => {
     if (!engaged) return;
@@ -37,8 +39,8 @@ const Panel = ({ elements }) => {
 
     //For second touch
     else {
-      setEngaed(false);
       elements.push({ ...newLine, x2: x, y2: y });
+      setEngaed(false);
       setNewLine(null);
     }
   };
@@ -51,10 +53,10 @@ const Panel = ({ elements }) => {
     >
       <div
         ref={canvasRef}
-        className="canvas bg-white overflow-hidden"
-        style={dimensions}
+        className="canvas bg-white"
+        style={position}
       >
-        <svg height={dimensions.height} width={dimensions.width}>
+        <svg {...position}>
           {elements.data.map((elm, i) => (
             <line key={i} {...elm} stroke="black" />
           ))}
