@@ -6,6 +6,7 @@
       "@/hooks/*":["src/hooks/*"],
       "@/context/*":["src/contexts/*"],
       "@/controllers/*":["src/controllers/*"],
+      "@/shapes/*":["src/shapes/*"],
       "@/icons/*":["public/icons/*"]
     }
   }

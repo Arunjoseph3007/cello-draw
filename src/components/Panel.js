@@ -34,8 +34,6 @@ const Panel = ({ elements, mode }) => {
       newShape,
       setNewShape,
       elements,
-      engaged,
-      setEngaged,
     });
   };
 
@@ -47,8 +45,6 @@ const Panel = ({ elements, mode }) => {
       newShape,
       setNewShape,
       elements,
-      engaged,
-      setEngaged,
     });
   };
 

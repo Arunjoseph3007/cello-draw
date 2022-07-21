@@ -1,44 +1,26 @@
-export const LINE = {
-  engaged: 0,
+import { Line } from "@/shapes/Line";
 
-  onMouseDown: ({
-    e,
-    position,
-    newShape,
-    setNewShape,
-    elements,
-    engaged,
-    setEngaged
-  }) => {
+export const LINE = {
+
+  onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
 
     //For first touch
-    if (!engaged) {
-      setNewShape({ x1: x, y1: y, x2: x, y2: y });
-      setEngaged(1);
+    if (!newShape) {
+      setNewShape(new Line(x, y));
     }
 
     //For second touch
     else {
-      elements.push({ ...newShape, x2: x, y2: y });
-      setEngaged(0);
-      setNewShape(null);
+      elements.push(newShape.land(x, y));
     }
   },
 
-  onMouseMove: ({
-    e,
-    position,
-    newShape,
-    setNewShape,
-    elements,
-    engaged,
-    setEngaged
-  }) => {
-    if (!engaged) return;
+  onMouseMove: ({ e, position, newShape, setNewShape, elements }) => {
+    if (!newShape) return;
 
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-    setNewShape((prev) => ({ ...prev, x2: x, y2: y }));
+    setNewShape((prev) => newShape.moveTo(x, y));
   },
 };
