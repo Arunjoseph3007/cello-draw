@@ -1,10 +1,11 @@
 //contextx
 import { controllerAtom } from "@/context/controller";
-import { engagedAtom } from "@/context/engaed";
 import { newShapeAtom } from "@/context/newShape";
 // Libs
 import { useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+//Renderer
+import { ShapeRenderer } from "@/renderers/index";
 
 let position = {
   width: 600,
@@ -15,7 +16,6 @@ let position = {
 
 const Panel = ({ elements, mode }) => {
   // States
-  const [engaged, setEngaged] = useRecoilState(engagedAtom);
   const controller = useRecoilValue(controllerAtom);
   const [newShape, setNewShape] = useRecoilState(newShapeAtom);
   const canvasRef = useRef();
@@ -28,24 +28,12 @@ const Panel = ({ elements, mode }) => {
 
   const handleMouseMove = (e) => {
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-    controller.onMouseMove({
-      e,
-      position,
-      newShape,
-      setNewShape,
-      elements,
-    });
+    controller.onMouseMove({ e, position, newShape, setNewShape, elements });
   };
 
   const handleMouseDown = (e) => {
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-    controller.onMouseDown({
-      e,
-      position,
-      newShape,
-      setNewShape,
-      elements,
-    });
+    controller.onMouseDown({ e, position, newShape, setNewShape, elements });
   };
 
   return (
@@ -57,7 +45,7 @@ const Panel = ({ elements, mode }) => {
       <div ref={canvasRef} className="canvas bg-white" style={position}>
         <svg {...position}>
           {elements.data.map((elm, i) => (
-            <line key={i} {...elm} stroke="black" />
+            <ShapeRenderer key={i} {...elm} />
           ))}
           {newShape && <line {...newShape} stroke="black" />}
         </svg>

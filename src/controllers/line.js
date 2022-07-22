@@ -1,5 +1,3 @@
-import { Line } from "@/shapes/Line";
-
 export const LINE = {
 
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
@@ -8,12 +6,13 @@ export const LINE = {
 
     //For first touch
     if (!newShape) {
-      setNewShape(new Line(x, y));
+      setNewShape({ x1: x, y1: y, x2: x, y2: y, type: "LINE", status: 1 });
     }
 
     //For second touch
     else {
-      elements.push(newShape.land(x, y));
+      elements.push({ ...newShape, x2: x, y2: y, status: 2 });
+      setNewShape(null);
     }
   },
 
@@ -21,6 +20,6 @@ export const LINE = {
     if (!newShape) return;
 
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-    setNewShape((prev) => newShape.moveTo(x, y));
+    setNewShape((prev) => ({ ...prev, x2: x, y2: y }));
   },
 };

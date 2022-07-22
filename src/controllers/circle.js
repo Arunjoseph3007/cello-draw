@@ -1,26 +1,25 @@
-import { newShapeAtom } from "@/context/newShape";
-import { useRecoilState } from "recoil";
-
 export const CIRCLE = {
-  engaged: 0,
 
-  onMouseDown: (e) => {
+  onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
-
-    const[newShape,setNewShape]=useRecoilState(newShapeAtom)
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
 
     //For first touch
-    if (!this.engaged) {
-      setNewShape({ x1: x, y1: y, x2: x, y2: y });
-      this.engaged = 1;
+    if (!newShape) {
+      setNewShape({ x1: x, y1: y, x2: x, y2: y, type: "LINE", status: 1 });
     }
 
     //For second touch
     else {
-      elements.push({ ...newLine, x2: x, y2: y });
-      this.engaged = 0;
+      elements.push({ ...newShape, x2: x, y2: y, status: 2 });
       setNewShape(null);
     }
+  },
+
+  onMouseMove: ({ e, position, newShape, setNewShape, elements }) => {
+    if (!newShape) return;
+
+    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    setNewShape((prev) => ({ ...prev, x2: x, y2: y }));
   },
 };
