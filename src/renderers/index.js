@@ -7,10 +7,16 @@ const Renderers = {
   CIRCLE: CircleRenderer,
   LINE: LineRenderer,
   FREEHAND: FreehandRenderer,
-  POLYGON:PolygonRenderer
+  POLYGON: PolygonRenderer,
 };
 
 export const ShapeRenderer = ({ type, ...props }) => {
+  // Basic safety
+  if (!type) {
+    console.log({ type, ...props });
+    return null;
+  }
+
   const TypeRenderer = Renderers[type];
   return <TypeRenderer {...props} />;
 };

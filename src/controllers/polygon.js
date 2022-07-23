@@ -8,10 +8,7 @@ export const POLYGON = {
     //For first touch
     if (!newShape) {
       setNewShape({
-        points: [
-          { x, y },
-          { x, y },
-        ],
+        points: [{ x, y },{ x, y }],
         type: "POLYGON",
         status: 1,
       });

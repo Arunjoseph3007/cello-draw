@@ -12,4 +12,7 @@
   .full-screen{
     @apply h-screen w-screen
   }
+  .full-space{
+    @apply h-full w-full
+  }
 }

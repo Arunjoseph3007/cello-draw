@@ -2,15 +2,15 @@
 import { controllerAtom } from "@/context/controller";
 import { newShapeAtom } from "@/context/newShape";
 // Libs
-import { useEffect, useRef, useDeferredValue } from "react";
+import { useEffect, useRef, useDeferredValue, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 //Renderer
 import { ShapeRenderer } from "@/renderers/index";
 import { useHotkeys } from "@/hooks/useHotkeys";
 
 let position = {
-  width: 800,
-  height: 600,
+  width: 700,
+  height: 500,
   x: 0,
   y: 0,
 };
@@ -31,11 +31,23 @@ const Panel = ({ elements, mode }) => {
   //When the mode is changed reset the new shape
   useEffect(() => setNewShape(null), [mode]);
 
+  // To set the newShape when ESC is pressed
+  useHotkeys("Escape", (e) => {
+    escapeShape();
+  });
+
+  const escapeShape = () => {
+      elements.push({ ...newShape, status: -1 });
+      setNewShape(null);
+  };
+
+  // To update the position on mouse movement
   const handleMouseMove = (e) => {
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
     controller.onMouseMove({ e, position, newShape, setNewShape, elements });
   };
 
+  //Handle mouse clicks
   const handleMouseDown = (e) => {
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
     controller.onMouseDown({ e, position, newShape, setNewShape, elements });
@@ -52,7 +64,9 @@ const Panel = ({ elements, mode }) => {
           {elements.data.map((elm, i) => (
             <ShapeRenderer key={i} {...elm} />
           ))}
-          {deferedNewShape && <ShapeRenderer {...deferedNewShape} />}
+          {newShape && deferedNewShape && (
+            <ShapeRenderer {...deferedNewShape} />
+          )}
         </svg>
       </div>
     </div>
