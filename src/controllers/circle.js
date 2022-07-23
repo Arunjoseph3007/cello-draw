@@ -1,17 +1,22 @@
-export const CIRCLE = {
+import { getDistance } from "@/utils/getDistance";
 
+export const CIRCLE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
 
     //For first touch
     if (!newShape) {
-      setNewShape({ x1: x, y1: y, x2: x, y2: y, type: "LINE", status: 1 });
+      setNewShape({ cx: x, cy: y, r: 0, type: "CIRCLE", status: 1 });
     }
 
     //For second touch
     else {
-      elements.push({ ...newShape, x2: x, y2: y, status: 2 });
+      elements.push({
+        ...newShape,
+        r: getDistance(newShape.cx, newShape.cy, x, y),
+        status: -1,
+      });
       setNewShape(null);
     }
   },
@@ -20,6 +25,9 @@ export const CIRCLE = {
     if (!newShape) return;
 
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-    setNewShape((prev) => ({ ...prev, x2: x, y2: y }));
+    setNewShape((prev) => ({
+      ...prev,
+      r: getDistance(prev.cx, prev.cy, x, y),
+    }));
   },
 };

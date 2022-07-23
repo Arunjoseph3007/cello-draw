@@ -9,4 +9,7 @@
   .dead-center{
       @apply flex items-center justify-center
   }
+  .full-screen{
+    @apply h-screen w-screen
+  }
 }
