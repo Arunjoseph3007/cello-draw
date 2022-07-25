@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 //Renderer
 import { ShapeRenderer } from "@/renderers/index";
 import { useHotkeys } from "@/hooks/useHotkeys";
+import { flushSync } from "react-dom";
 
 let position = {
   width: 700,
@@ -18,7 +19,7 @@ let position = {
 const Panel = ({ elements, mode }) => {
   // States
   const controller = useRecoilValue(controllerAtom);
-  const [newShape, setNewShape] = useRecoilState(newShapeAtom);
+  const [newShape, setNewShape] = useState(false);
   const canvasRef = useRef();
   const deferedNewShape = useDeferredValue(newShape);
 
@@ -32,13 +33,17 @@ const Panel = ({ elements, mode }) => {
   useEffect(() => setNewShape(null), [mode]);
 
   // To set the newShape when ESC is pressed
-  useHotkeys("Escape", (e) => {
-    escapeShape();
-  });
+  useHotkeys("Escape", (e) => escapeShape());
 
   const escapeShape = () => {
-      elements.push({ ...newShape, status: -1 });
-      setNewShape(null);
+    let temp;
+    flushSync(() => {
+      setNewShape((prev) => {
+        temp = prev;
+        return null;
+      });
+    });
+    elements.push({ ...temp, status: -1 });
   };
 
   // To update the position on mouse movement
@@ -64,9 +69,7 @@ const Panel = ({ elements, mode }) => {
           {elements.data.map((elm, i) => (
             <ShapeRenderer key={i} {...elm} />
           ))}
-          {newShape && deferedNewShape && (
-            <ShapeRenderer {...deferedNewShape} />
-          )}
+          {newShape && <ShapeRenderer {...deferedNewShape} />}
         </svg>
       </div>
     </div>

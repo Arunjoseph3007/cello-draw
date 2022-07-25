@@ -13,7 +13,6 @@ const Renderers = {
 export const ShapeRenderer = ({ type, ...props }) => {
   // Basic safety
   if (!type) {
-    console.log({ type, ...props });
     return null;
   }
 
