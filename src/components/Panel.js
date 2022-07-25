@@ -21,7 +21,6 @@ const Panel = ({ elements, mode }) => {
   const controller = useRecoilValue(controllerAtom);
   const [newShape, setNewShape] = useState(false);
   const canvasRef = useRef();
-  const deferedNewShape = useDeferredValue(newShape);
 
   // For setting the position
   useEffect(() => {
