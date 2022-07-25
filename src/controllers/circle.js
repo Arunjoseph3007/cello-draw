@@ -1,4 +1,5 @@
 import { getDistance } from "@/utils/getDistance";
+import { Shape } from ".";
 
 export const CIRCLE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
@@ -31,3 +32,5 @@ export const CIRCLE = {
     }));
   },
 };
+
+

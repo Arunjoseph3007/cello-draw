@@ -69,7 +69,7 @@ const Panel = ({ elements, mode }) => {
           {elements.data.map((elm, i) => (
             <ShapeRenderer key={i} {...elm} />
           ))}
-          {newShape && <ShapeRenderer {...deferedNewShape} />}
+          {newShape && <ShapeRenderer {...newShape} />}
         </svg>
       </div>
     </div>

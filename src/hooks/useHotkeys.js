@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 
-export const useHotkeys = (key = "", cb) => {
+export const useHotkeys = (key = "", cb, dependancyArray = []) => {
   useEffect(() => {
-
     const listener = (e) => {
       if (e.key !== key) return;
       cb(e);
     };
-    
+
     document.addEventListener("keydown", (e) => {
       listener(e);
     });
@@ -15,5 +14,5 @@ export const useHotkeys = (key = "", cb) => {
     return document.removeEventListener("keydown", (e) => {
       listener(e);
     });
-  }, []);
+  }, dependancyArray);
 };

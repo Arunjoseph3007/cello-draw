@@ -1,5 +1,6 @@
-export const LINE = {
+import { Shape } from "./index";
 
+export const LINE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
