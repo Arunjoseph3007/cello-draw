@@ -19,7 +19,7 @@ let position = {
 const Panel = ({ elements, mode }) => {
   // States
   const controller = useRecoilValue(controllerAtom);
-  const [newShape, setNewShape] = useState(false);
+  const [newShape, setNewShape] = useRecoilState(newShapeAtom);
   const canvasRef = useRef();
 
   // For setting the position
@@ -32,17 +32,11 @@ const Panel = ({ elements, mode }) => {
   useEffect(() => setNewShape(null), [mode]);
 
   // To set the newShape when ESC is pressed
-  useHotkeys("Escape", (e) => escapeShape());
+  useHotkeys("Escape", (e) => escapeShape(), [newShape]);
 
   const escapeShape = () => {
-    let temp;
-    flushSync(() => {
-      setNewShape((prev) => {
-        temp = prev;
-        return null;
-      });
-    });
-    elements.push({ ...temp, status: -1 });
+    elements.push({ ...newShape, status: -1 });
+    setNewShape(null);
   };
 
   // To update the position on mouse movement

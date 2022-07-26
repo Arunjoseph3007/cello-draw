@@ -21,7 +21,7 @@ export default function Home() {
         <meta name="description" content="A handy drawing app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Topbar mode={mode} setMode={setMode} />
+      <Topbar mode={mode} setMode={setMode} elements={elements} />
       <div className="flex-1 flex justify-between">
         <Leftbar elements={elements} />
         <Panel elements={elements} mode={mode} />
