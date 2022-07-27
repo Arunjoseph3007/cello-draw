@@ -1,3 +1,5 @@
+import { v4 } from "uuid";
+
 export const RECTANGLE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
@@ -13,6 +15,7 @@ export const RECTANGLE = {
         height: 0,
         type: "RECTANGLE",
         status: 1,
+        id: v4(),
       });
     }
 

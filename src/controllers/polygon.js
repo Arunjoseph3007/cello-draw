@@ -1,4 +1,4 @@
-import { getPoints } from "src/utils/getPoints";
+import { v4 } from "uuid";
 
 export const POLYGON = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
@@ -8,9 +8,13 @@ export const POLYGON = {
     //For first touch
     if (!newShape) {
       setNewShape({
-        points: [{ x, y },{ x, y }],
+        points: [
+          { x, y },
+          { x, y },
+        ],
         type: "POLYGON",
         status: 1,
+        id: v4(),
       });
       return;
     }

@@ -1,4 +1,4 @@
-import { Shape } from "./index";
+import { v4 } from "uuid";
 
 export const LINE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
@@ -7,7 +7,15 @@ export const LINE = {
 
     //For first touch
     if (!newShape) {
-      setNewShape({ x1: x, y1: y, x2: x, y2: y, type: "LINE", status: 1 });
+      setNewShape({
+        x1: x,
+        y1: y,
+        x2: x,
+        y2: y,
+        type: "LINE",
+        status: 1,
+        id: v4(),
+      });
     }
 
     //For second touch

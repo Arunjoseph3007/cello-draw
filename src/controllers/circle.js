@@ -1,5 +1,5 @@
 import { getDistance } from "@/utils/getDistance";
-import { Shape } from ".";
+import {v4} from 'uuid'
 
 export const CIRCLE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
@@ -8,7 +8,7 @@ export const CIRCLE = {
 
     //For first touch
     if (!newShape) {
-      setNewShape({ cx: x, cy: y, r: 0, type: "CIRCLE", status: 1 });
+      setNewShape({ cx: x, cy: y, r: 0, type: "CIRCLE", status: 1 ,id:v4()});
     }
 
     //For second touch

@@ -1,4 +1,4 @@
-import { getDistance } from "@/utils/getDistance";
+import { v4 } from "uuid";
 
 export const FREEHAND = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
@@ -14,6 +14,7 @@ export const FREEHAND = {
         ],
         type: "FREEHAND",
         status: 1,
+        id: v4(),
       });
     }
 

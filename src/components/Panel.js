@@ -60,7 +60,7 @@ const Panel = ({ elements, mode }) => {
       <div ref={canvasRef} className="canvas bg-white" style={position}>
         <svg {...position}>
           {elements.data.map((elm, i) => (
-            <ShapeRenderer key={i} {...elm} />
+            <ShapeRenderer key={elm.id} {...elm} />
           ))}
           {newShape && <ShapeRenderer {...newShape} />}
         </svg>

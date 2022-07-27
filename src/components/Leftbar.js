@@ -15,15 +15,15 @@ const ICONS = {
 const Leftbar = ({ elements, selectedID, setSelectedID }) => {
   return (
     <div className="h-full w-1/5 shadow-2xl">
-      {elements.data.map((elm, i) => (
+      {elements.data.map((elm) => (
         <div
-          onClick={() => setSelectedID(i)}
+          onClick={() => setSelectedID(elm.id)}
           className={`flex items-center gap-5 p-2 border-b hover:bg-gray-300 ${
-            i === selectedID && "bg-gray-200"
+            elm.id === selectedID && "bg-gray-200"
           }`}
-          key={i}
+          key={elm.id}
         >
-          <span className="text-gray-400">{ICONS[elm.type]}</span>
+          <span className="text-gray-400">{ICONS[elm?.type]}</span>
           <h1 className="cursor-pointer capitalize">
             {elm?.type?.toLowerCase()}
           </h1>

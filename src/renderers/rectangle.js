@@ -7,9 +7,8 @@ export const RectangleRenderer = ({ x, y, width, height, ...props }) => {
       ry={0}
       height={height}
       width={width}
-      stroke="#000"
       strokeWidth={2}
-      fill="yellow"
+      {...props}
     />
   );
 };

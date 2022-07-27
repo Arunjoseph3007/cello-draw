@@ -9,17 +9,24 @@ import { useArray } from "@/hooks/useArray";
 //Third party libs
 import { useRecoilState } from "recoil";
 import { modeAtom } from "@/context/mode";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Home() {
   const elements = useArray();
   const [mode, setMode] = useRecoilState(modeAtom);
   const [selectedID, setSelectedID] = useState(-1);
+  const [selectedShape, setSelectedShape] = useState(null);
 
-  const selectedShape = useMemo(() => {
-    if (selectedID === -1) return null;
-    return elements.data[selectedID];
-  });
+  useEffect(() => {
+    setSelectedShape(elements.data.find((elm) => elm.id === selectedID));
+  }, [selectedID]);
+
+  useEffect(() => {
+    if (selectedID === -1 || !selectedShape) return;
+
+    const index = elements.data.findIndex((elm) => elm.id === selectedID);
+    elements.update(index, selectedShape);
+  }, [selectedShape]);
 
   return (
     <div className="h-screen flex flex-col">
@@ -36,7 +43,10 @@ export default function Home() {
           elements={elements}
         />
         <Panel elements={elements} mode={mode} />
-        <Rightbar selectedShape={selectedShape} />
+        <Rightbar
+          selectedShape={selectedShape}
+          setSelectedShape={setSelectedShape}
+        />
       </div>
     </div>
   );

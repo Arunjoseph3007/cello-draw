@@ -10,6 +10,11 @@
   letter-spacing: 0.05rem;
 }
 
+.canvas-element {
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
 @layer components {
   .debug {
     @apply outline outline-red-500;
@@ -22,5 +27,16 @@
   }
   .full-space {
     @apply h-full w-full;
+  }
+  .range {
+    @apply appearance-none
+    w-full
+    h-2
+    rounded-full
+    p-0
+    border
+    out-of-range:bg-red-500
+    in-range:bg-blue-200
+    focus:outline-none focus:ring-0 focus:shadow-none;
   }
 }
