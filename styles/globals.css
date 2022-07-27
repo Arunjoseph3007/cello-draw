@@ -2,17 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+*::before,
+*::after {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.05rem;
+}
+
 @layer components {
   .debug {
-      @apply outline outline-red-500
+    @apply outline outline-red-500;
   }
-  .dead-center{
-      @apply flex items-center justify-center
+  .dead-center {
+    @apply flex items-center justify-center;
   }
-  .full-screen{
-    @apply h-screen w-screen
+  .full-screen {
+    @apply h-screen w-screen;
   }
-  .full-space{
-    @apply h-full w-full
+  .full-space {
+    @apply h-full w-full;
   }
 }
