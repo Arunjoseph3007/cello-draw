@@ -1,4 +1,8 @@
 const Rightbar = ({ selectedShape, setSelectedShape }) => {
+  const handleChange = (e) => {
+    setSelectedShape((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   if (!selectedShape)
     return (
       <div className="h-full w-1/5 dead-center">
@@ -18,14 +22,12 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
         </h3>
         <input
           className="range"
-          title="Scale"
+          name="scale"
           type="range"
           min={0}
           max={20}
           value={selectedShape.scale || 1}
-          onChange={(e) =>
-            setSelectedShape({ ...selectedShape, scale: e.target.value })
-          }
+          onChange={handleChange}
           step={0.1}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
@@ -33,15 +35,39 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
         </h3>
         <input
           className="range"
-          title="Rotation"
+          name="rotation"
           type="range"
           min={-180}
           max={180}
           step={1}
           value={selectedShape.rotation}
-          onChange={(e) =>
-            setSelectedShape({ ...selectedShape, rotation: e.target.value })
-          }
+          onChange={handleChange}
+        />
+        <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
+          SKEW X
+        </h3>
+        <input
+          className="range"
+          name="skewX"
+          type="range"
+          min={-180}
+          max={180}
+          step={1}
+          value={selectedShape.skewX}
+          onChange={handleChange}
+        />
+        <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
+          SKEW Y
+        </h3>
+        <input
+          className="range"
+          name="skewY"
+          type="range"
+          min={-180}
+          max={180}
+          step={1}
+          value={selectedShape.skewY}
+          onChange={handleChange}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           FILL
@@ -49,10 +75,9 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
         <div className="flex items-center gap-4">
           <input
             type="color"
+            name="fill"
             value={selectedShape.fill || "#000000"}
-            onChange={(e) =>
-              setSelectedShape({ ...selectedShape, fill: e.target.value })
-            }
+            onChange={handleChange}
           />
           <p>{selectedShape.fill || "#23d997"}</p>
         </div>
@@ -62,13 +87,25 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
         <div className="flex items-center gap-4">
           <input
             type="color"
+            name="stroke"
             value={selectedShape.stroke || "#000000"}
-            onChange={(e) =>
-              setSelectedShape({ ...selectedShape, stroke: e.target.value })
-            }
+            onChange={handleChange}
           />
           <p>{selectedShape.stroke || "#23d997"}</p>
         </div>
+        <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
+          STROKE WIDTH
+        </h3>
+        <input
+          className="range"
+          name="strokeWidth"
+          type="range"
+          min={0}
+          max={100}
+          step={2}
+          value={selectedShape.strokeWidth || 2}
+          onChange={handleChange}
+        />
       </div>
     </div>
   );

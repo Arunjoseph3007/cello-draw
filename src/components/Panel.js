@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 //Renderer
 import { ShapeRenderer } from "@/renderers/index";
 import { useHotkeys } from "@/hooks/useHotkeys";
-import { flushSync } from "react-dom";
+import StylesPicker from "./StylePicker";
 
 let position = {
   width: 700,
@@ -55,7 +55,7 @@ const Panel = ({ elements, mode }) => {
     <div
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
-      className="flex-1 w-full h-full dead-center bg-gray-300"
+      className="flex-1 w-full h-full dead-center relative bg-gray-300"
     >
       <div ref={canvasRef} className="canvas bg-white" style={position}>
         <svg {...position}>
@@ -65,6 +65,7 @@ const Panel = ({ elements, mode }) => {
           {newShape && <ShapeRenderer {...newShape} />}
         </svg>
       </div>
+      <StylesPicker newShape={newShape} mode={mode} setNewShape={setNewShape} />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { UndoIcon } from "@/icons/Undo";
 import { RedoIcon } from "@/icons/Redo";
 import { CloseIcon } from "@/icons/Close";
 import { RectangleIcon } from "@/icons/Rectangle";
+import { PathIcon } from "@/icons/Path";
 
 const Topbar = ({ mode, setMode, elements }) => {
   const buttons = [
@@ -15,6 +16,7 @@ const Topbar = ({ mode, setMode, elements }) => {
     { title: "FREEHAND", icon: <FreehandIcon /> },
     { title: "POLYGON", icon: <PolygonIcon /> },
     { title: "RECTANGLE", icon: <RectangleIcon /> },
+    { title: "PATH", icon: <PathIcon /> },
   ];
 
   return (
