@@ -1,13 +1,4 @@
-export const PathRenderer = ({ points, temp, origin, pathType, ...props }) => {
-  let allPoints = [...points];
-  if (temp) {
-    allPoints.push(temp);
-  }
-
-  return <path d={getPath(allPoints, origin)} {...props} />;
-};
-
-const getPath = (points, origin) => {
+export const getPath = (points, origin) => {
   let ans = " M ";
   ans += ` ${origin.x} ${origin.y} `;
 
