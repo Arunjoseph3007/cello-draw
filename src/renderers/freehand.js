@@ -1,5 +1,5 @@
 import { getPoints } from "@/utils/getPoints";
 
-export const FreehandRenderer = ({ points, ...props }) => {
-  return <polyline points={getPoints(points)} {...props} />;
+export const FreehandRenderer = ({ points,shapeRef, ...props }) => {
+  return <polyline ref={shapeRef} points={getPoints(points)} {...props} />;
 };

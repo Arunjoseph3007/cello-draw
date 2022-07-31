@@ -1,5 +1,5 @@
 import { getPoints } from "@/utils/getPoints";
 
-export const PolygonRenderer = ({ points, ...props }) => {
-  return <polygon points={getPoints(points)} {...props} />;
+export const PolygonRenderer = ({ shapeRef, points, ...props }) => {
+  return <polygon ref={shapeRef} points={getPoints(points)} {...props} />;
 };

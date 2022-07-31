@@ -39,4 +39,13 @@
     in-range:bg-blue-200
     focus:outline-none focus:ring-0 focus:shadow-none;
   }
+  .small-black-box {
+    @apply absolute h-2 
+    aspect-square 
+    bg-white 
+    border 
+    border-black 
+    -translate-x-1/2 
+    -translate-y-1/2;
+  }
 }

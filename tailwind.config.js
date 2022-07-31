@@ -9,4 +9,9 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  variant: {
+    extends: {
+      opacity: ["group-hover"],
+    },
+  },
 };

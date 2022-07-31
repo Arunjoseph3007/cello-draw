@@ -4,6 +4,7 @@ import { newShapeAtom } from "@/context/newShape";
 // Libs
 import { useEffect, useRef, useDeferredValue, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { flushSync } from "react-dom";
 //Renderer
 import { ShapeRenderer } from "@/renderers/index";
 import { useHotkeys } from "@/hooks/useHotkeys";
@@ -35,7 +36,9 @@ const Panel = ({ elements, mode }) => {
   useHotkeys("Escape", (e) => escapeShape(), [newShape]);
 
   const escapeShape = () => {
-    elements.push({ ...newShape, status: -1 });
+    flushSync(() => {
+      elements.push({ ...newShape, status: -1 });
+    });
     setNewShape(null);
   };
 

@@ -1,3 +1,3 @@
-export const CircleRenderer = (props) => {
-  return <circle {...props} />;
+export const CircleRenderer = ({ shapeRef, ...props }) => {
+  return <circle ref={shapeRef} {...props} />;
 };

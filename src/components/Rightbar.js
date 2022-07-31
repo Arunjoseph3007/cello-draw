@@ -40,7 +40,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           min={-180}
           max={180}
           step={1}
-          value={selectedShape.rotation}
+          value={selectedShape.rotation || 0}
           onChange={handleChange}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
@@ -53,7 +53,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           min={-180}
           max={180}
           step={1}
-          value={selectedShape.skewX}
+          value={selectedShape.skewX || 0}
           onChange={handleChange}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
@@ -66,7 +66,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           min={-180}
           max={180}
           step={1}
-          value={selectedShape.skewY}
+          value={selectedShape.skewY || 0}
           onChange={handleChange}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
