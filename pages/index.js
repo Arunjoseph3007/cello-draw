@@ -7,27 +7,19 @@ import Topbar from "@/components/Topbar";
 //Hooks
 import { useArray } from "@/hooks/useArray";
 //Third party libs
-import { useRecoilState } from "recoil";
-import { modeAtom } from "@/context/mode";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect, useMemo, useState } from "react";
+//States
+import { modeAtom } from "@/context/mode";
+import { selectedIDAtom, selectedShapeAtom } from "@/context/selectedShape";
 
 export default function Home() {
   const elements = useArray();
   const [mode, setMode] = useRecoilState(modeAtom);
-  const [selectedID, setSelectedID] = useState(-1);
-  const [selectedShape, setSelectedShape] = useState(null);
+  const [selectedID, setSelectedID] = useRecoilState(selectedIDAtom);
+  const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
 
-  useEffect(() => {
-    setSelectedShape(elements.data.find((elm) => elm.id === selectedID));
-  }, [selectedID]);
-
-  useEffect(() => {
-    if (selectedID === -1 || !selectedShape) return;
-
-    const index = elements.data.findIndex((elm) => elm.id === selectedID);
-    elements.update(index, selectedShape);
-  }, [selectedShape]);
-
+  // U I
   return (
     <div className="h-screen flex flex-col">
       <Head>

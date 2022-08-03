@@ -11,13 +11,12 @@ const TYPES = [
 ];
 
 const StylesPicker = ({ mode, setNewShape, newShape }) => {
-
-  if (mode !== "PATH") return null;
-
   const handleClick = (pathType) =>
     setNewShape((prev) => ({ ...prev, pathType }));
 
   const listener = (e) => {
+    if (mode !== "PATH") return;
+
     if (TYPES.includes(e.key.toUpperCase())) {
       handleClick(e.key.toUpperCase());
     }
@@ -29,6 +28,7 @@ const StylesPicker = ({ mode, setNewShape, newShape }) => {
     return document.removeEventListener("keydown", (e) => listener(e));
   }, []);
 
+  if (mode !== "PATH") return null;
 
   return (
     <div className="absolute inset-x-5 bottom-2 h-10 bg-black text-white shadow-lg flex justify-around">

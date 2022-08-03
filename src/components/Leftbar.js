@@ -2,6 +2,7 @@ import { CircleIcon } from "@/icons/Circle";
 import { DeleteIcon } from "@/icons/Delete";
 import { FreehandIcon } from "@/icons/Freehand";
 import { LineIcon } from "@/icons/Line";
+import { OptionsIcon } from "@/icons/Options";
 import { PathIcon } from "@/icons/Path";
 import { PolygonIcon } from "@/icons/Polygon";
 import { RectangleIcon } from "@/icons/Rectangle";
@@ -21,7 +22,7 @@ const Leftbar = ({ elements, selectedID, setSelectedID }) => {
       {elements.data.map((elm, i) => (
         <div
           onClick={() => setSelectedID(elm.id)}
-          className={`group flex items-center gap-5 p-2 border-b hover:bg-gray-300 ${
+          className={`group flex items-center gap-4 p-2 border-b hover:bg-gray-300 ${
             elm.id === selectedID && "bg-gray-200"
           }`}
           key={elm.id}
@@ -35,6 +36,9 @@ const Leftbar = ({ elements, selectedID, setSelectedID }) => {
             className="hidden cursor-pointer group-hover:block"
           >
             <DeleteIcon />
+          </span>
+          <span className="hidden cursor-pointer group-hover:block">
+            <OptionsIcon />
           </span>
         </div>
       ))}

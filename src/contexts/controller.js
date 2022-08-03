@@ -8,7 +8,14 @@ import { POLYGON } from "@/controllers/polygon";
 import { RECTANGLE } from "@/controllers/rectangle";
 import { PATH } from "@/controllers/path";
 
-const controllers = { LINE, CIRCLE, FREEHAND, POLYGON, RECTANGLE, PATH };
+const controllers = {
+  LINE,
+  CIRCLE,
+  FREEHAND,
+  POLYGON,
+  RECTANGLE,
+  PATH,
+};
 
 export const controllerAtom = selector({
   key: "controller",

@@ -50,6 +50,9 @@ const Panel = ({ elements, mode }) => {
 
   //Handle mouse clicks
   const handleMouseDown = (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey || e.button !== 0)
+      return;
+
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
     controller.onMouseDown({ e, position, newShape, setNewShape, elements });
   };

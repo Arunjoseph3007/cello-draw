@@ -11,17 +11,18 @@ export const useArray = () => {
   const setArrayWithHistory = (v) => {
     const resolvedValue = typeof v === "function" ? v(array) : v;
 
-    if (historyRef.current[pointerRef.current] !== resolvedValue) {
-      if (pointerRef.current < historyRef.current.length - 1) {
-        historyRef.current.splice(pointerRef.current + 1);
-      }
-      historyRef.current.push(resolvedValue);
-
-      while (historyRef.current.length > capacity) {
-        historyRef.current.shift();
-      }
-      pointerRef.current = historyRef.current.length - 1;
+    if (historyRef.current[pointerRef.current] !== resolvedValue) return;
+    
+    if (pointerRef.current < historyRef.current.length - 1) {
+      historyRef.current.splice(pointerRef.current + 1);
     }
+    historyRef.current.push(resolvedValue);
+
+    while (historyRef.current.length > capacity) {
+      historyRef.current.shift();
+    }
+    pointerRef.current = historyRef.current.length - 1;
+
     setArray(resolvedValue);
   };
 
