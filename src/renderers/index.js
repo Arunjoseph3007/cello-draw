@@ -31,10 +31,10 @@ export const ShapeRenderer = ({ type, ...props }) => {
     width: 200,
   });
 
-  useEffect(() => {
-    const newS = shapeRef.current.getBoundingClientRect();
-    setPortalStyles(newS);
-  }, [shapeRef]);
+  // useEffect(() => {
+  //   const newS = shapeRef.current.getBoundingClientRect();
+  //   setPortalStyles(newS);
+  // }, [shapeRef]);
 
   const transform = `
   translate(${0} ${0}) 
@@ -56,7 +56,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
         stroke={props.stroke || "#23d997"}
         strokeWidth={props.strokeWidth || 2}
       />
-      <Portal selector="#portal">
+      {/* <Portal selector="#portal">
         <div
           className="absolute bg-transparent border-[3px] border-dashed border-blue-400"
           style={{
@@ -85,7 +85,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
             style={{ top: FULL, left: FULL }}
           ></div>
         </div>
-      </Portal>
+      </Portal> */}
     </>
   );
 };

@@ -3,60 +3,31 @@ import { elementsAtom } from "@/context/elements";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useArray = () => {
-  const capacity = 30;
   const [array, setArray] = useRecoilState(elementsAtom);
-  const historyRef = useRef([]);
-  const pointerRef = useRef(0);
 
-  const setArrayWithHistory = (v) => {
-    const resolvedValue = typeof v === "function" ? v(array) : v;
+  const undo = () => {};
 
-    if (historyRef.current[pointerRef.current] !== resolvedValue) return;
-    
-    if (pointerRef.current < historyRef.current.length - 1) {
-      historyRef.current.splice(pointerRef.current + 1);
-    }
-    historyRef.current.push(resolvedValue);
+  const redo = () => {};
 
-    while (historyRef.current.length > capacity) {
-      historyRef.current.shift();
-    }
-    pointerRef.current = historyRef.current.length - 1;
+  const push = (element) => setArray((a) => [...a, element]);
 
-    setArray(resolvedValue);
-  };
-
-  const undo = () => {
-    if (pointerRef.current <= 0) return;
-    pointerRef.current--;
-    setArray(historyRef.current[pointerRef.current]);
-  };
-
-  const redo = () => {
-    if (pointerRef.current >= historyRef.current.length - 1) return;
-    pointerRef.current++;
-    setArray(historyRef.current[pointerRef.current]);
-  };
-
-  const push = (element) => setArrayWithHistory((a) => [...a, element]);
-
-  const filter = (callback) => setArrayWithHistory((a) => a.filter(callback));
+  const filter = (callback) => setArray((a) => a.filter(callback));
 
   const update = (index, newElement) =>
-    setArrayWithHistory((a) => [
+    setArray((a) => [
       ...a.slice(0, index),
       newElement,
       ...a.slice(index + 1, a.length),
     ]);
 
   const remove = (i) =>
-    setArrayWithHistory((a) => [...a.slice(0, i), ...a.slice(i + 1, a.length)]);
+    setArray((a) => [...a.slice(0, i), ...a.slice(i + 1, a.length)]);
 
-  const clear = () => setArrayWithHistory([]);
+  const clear = () => setArray([]);
 
   return {
     data: array,
-    setData: setArrayWithHistory,
+    setData: setArray,
     push: push,
     filter: filter,
     update: update,

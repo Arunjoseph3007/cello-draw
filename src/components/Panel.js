@@ -33,12 +33,12 @@ const Panel = ({ elements, mode }) => {
   useEffect(() => setNewShape(null), [mode]);
 
   // To set the newShape when ESC is pressed
-  useHotkeys("Escape", (e) => escapeShape(), [newShape]);
+  useHotkeys("Escape", (e) => escapeShape());
 
   const escapeShape = () => {
-    flushSync(() => {
-      elements.push({ ...newShape, status: -1 });
-    });
+    if (!newShape) return;
+
+    elements.push({ ...newShape, status: -1 });
     setNewShape(null);
   };
 

@@ -11,16 +11,22 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 //States
 import { modeAtom } from "@/context/mode";
-import { selectedIDAtom, selectedShapeAtom } from "@/context/selectedShape";
 
 export default function Home() {
   const elements = useArray();
   const [mode, setMode] = useRecoilState(modeAtom);
-  const [selectedID, setSelectedID] = useRecoilState(selectedIDAtom);
-  const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
+  const [selectedID, setSelectedID] = useState(-1);
+  const [selectedShape, setSelectedShape] = useState(null);
   const deferredSelectedShape = useDeferredValue(selectedShape);
 
   useEffect(() => {
+    if (selectedID === -1) return;
+
+    setSelectedShape(elements.data.find((a) => a.id === selectedID));
+  }, [selectedID]);
+
+  useEffect(() => {
+    if (!selectedShape) return;
     const index = elements.data.findIndex(
       (a) => a.id === deferredSelectedShape.id
     );
