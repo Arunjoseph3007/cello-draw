@@ -34,7 +34,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
   useEffect(() => {
     const newS = shapeRef.current.getBoundingClientRect();
     setPortalStyles(newS);
-  }, [shapeRef, props]);
+  }, [shapeRef]);
 
   const transform = `
   translate(${0} ${0}) 

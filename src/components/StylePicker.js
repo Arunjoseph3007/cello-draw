@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 
 const TYPES = [
-  "L", //Line : done completely (requires x y)
-  "H", //Horizontal line : Done maybe a bit better UX (requires x)
-  "V", //Vertical Line : Same as H ( reqires y)
-  "T", //Sym Quadratic curve: done (requires x y)
-  "Q", //Assyn Quadratic Curve : done (requires x1 y1, x2 y2)
-  "S", //Sym Qubic curve : done (requires x1 y1, x2 y2)
-  "C", //Probably most difficul (requires x1 y1, x2 y2, x3 y3)
+  "L", //Line : done completely
+  "H", //Horizontal line : Done maybe a bit better UX
+  "V", // Vertical Line : Same as H
+  "S", //Remaining
+  "Q", //pending
+  "T", //done boy but requires a push first
+  "A", //no idea
 ];
 
 const StylesPicker = ({ mode, setNewShape, newShape }) => {

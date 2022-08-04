@@ -8,7 +8,7 @@ import Topbar from "@/components/Topbar";
 import { useArray } from "@/hooks/useArray";
 //Third party libs
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 //States
 import { modeAtom } from "@/context/mode";
 import { selectedIDAtom, selectedShapeAtom } from "@/context/selectedShape";
@@ -18,6 +18,17 @@ export default function Home() {
   const [mode, setMode] = useRecoilState(modeAtom);
   const [selectedID, setSelectedID] = useRecoilState(selectedIDAtom);
   const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
+  const deferredSelectedShape = useDeferredValue(selectedShape);
+
+  useEffect(() => {
+    const index = elements.data.findIndex(
+      (a) => a.id === deferredSelectedShape.id
+    );
+
+    if (!deferredSelectedShape || index === -1) return;
+
+    elements.update(index, deferredSelectedShape);
+  }, [deferredSelectedShape]);
 
   // U I
   return (

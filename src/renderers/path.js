@@ -21,6 +21,9 @@ const getPath = (points, origin) => {
   //for rest points
   points.forEach((elm) => {
     switch (elm.pathType) {
+      case "L":
+        ans += ` L ${elm.x} ${elm.y}`;
+        break;
       case "H":
         ans += ` H ${elm.x} `;
         break;
