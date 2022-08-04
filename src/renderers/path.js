@@ -1,5 +1,5 @@
 export const PathRenderer = ({
-  shapeRed,
+  shapeRef,
   points,
   temp,
   origin,
