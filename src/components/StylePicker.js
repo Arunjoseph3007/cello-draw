@@ -1,3 +1,4 @@
+import { useEventListener } from "@/hooks/useEventListener";
 import { useEffect } from "react";
 
 const TYPES = [
@@ -22,11 +23,7 @@ const StylesPicker = ({ mode, setNewShape, newShape }) => {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("keydown", (e) => listener(e));
-
-    return document.removeEventListener("keydown", (e) => listener(e));
-  }, []);
+  useEventListener("keydown", listener);
 
   if (mode !== "PATH") return null;
 

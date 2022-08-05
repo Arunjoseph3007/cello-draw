@@ -4,7 +4,6 @@ import { newShapeAtom } from "@/context/newShape";
 // Libs
 import { useEffect, useRef, useDeferredValue, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { flushSync } from "react-dom";
 //Renderer
 import { ShapeRenderer } from "@/renderers/index";
 import { useHotkeys } from "@/hooks/useHotkeys";
@@ -65,9 +64,11 @@ const Panel = ({ elements, mode }) => {
     >
       <div ref={canvasRef} className="canvas bg-white" style={position}>
         <svg {...position}>
-          {elements.data.map((elm, i) => (
-            <ShapeRenderer key={elm.id} {...elm} />
-          ))}
+          {elements.data
+            .filter((a) => !a?.hidden)
+            .map((elm, i) => (
+              <ShapeRenderer key={elm.id} {...elm} />
+            ))}
           {newShape && <ShapeRenderer {...newShape} />}
         </svg>
       </div>

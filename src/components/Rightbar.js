@@ -1,3 +1,5 @@
+import ExpandableBox from "./ExpandableBox";
+
 const Rightbar = ({ selectedShape, setSelectedShape }) => {
   const handleChange = (e) => {
     setSelectedShape((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -11,22 +13,34 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
     );
 
   return (
-    <div className="h-full w-1/5 flex flex-col gap-2">
+    <div className="h-full w-1/5 flex flex-col gap-0">
       <h1 className="text-2xl text-slate-600 p-2 border-b font-semibold">
         {selectedShape?.type}
       </h1>
-      <div className="flex flex-col px-2 gap-3">
-        <h1>Transforms</h1>
+      <ExpandableBox title={"Transform"}>
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
-          SCALE
+          SCALE X
         </h3>
         <input
           className="range"
-          name="scale"
+          name="scaleX"
           type="range"
           min={0}
           max={20}
-          value={selectedShape.scale || 1}
+          value={selectedShape.scaleX || 1}
+          onChange={handleChange}
+          step={0.1}
+        />
+        <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
+          SCALE Y
+        </h3>
+        <input
+          className="range"
+          name="scaleY"
+          type="range"
+          min={0}
+          max={20}
+          value={selectedShape.scaleY || 1}
           onChange={handleChange}
           step={0.1}
         />
@@ -69,6 +83,8 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           value={selectedShape.skewY || 0}
           onChange={handleChange}
         />
+      </ExpandableBox>
+      <ExpandableBox title={"Colors"}>
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           FILL
         </h3>
@@ -106,7 +122,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           value={selectedShape.strokeWidth || 2}
           onChange={handleChange}
         />
-      </div>
+      </ExpandableBox>
     </div>
   );
 };
