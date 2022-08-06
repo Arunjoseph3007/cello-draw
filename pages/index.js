@@ -27,7 +27,7 @@ export default function Home() {
     setSelectedShape(elements.data.find((a) => a.id === selectedID));
   }, [selectedID]);
 
-  useEffect(() => {
+  const updateWithSelecctedShape=() => {
     if (!selectedShape) return;
     const index = elements.data.findIndex(
       (a) => a.id === deferredSelectedShape.id
@@ -36,7 +36,7 @@ export default function Home() {
     if (!deferredSelectedShape || index === -1) return;
 
     elements.update(index, deferredSelectedShape);
-  }, [deferredSelectedShape]);
+  }
 
   // U I
   return (
@@ -57,6 +57,7 @@ export default function Home() {
         <Rightbar
           selectedShape={selectedShape}
           setSelectedShape={setSelectedShape}
+          updateWithSelecctedShape={updateWithSelecctedShape}
         />
       </div>
     </div>

@@ -1,6 +1,10 @@
 import ExpandableBox from "./ExpandableBox";
 
-const Rightbar = ({ selectedShape, setSelectedShape }) => {
+const Rightbar = ({
+  selectedShape,
+  setSelectedShape,
+  updateWithSelecctedShape,
+}) => {
   const handleChange = (e) => {
     setSelectedShape((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -29,6 +33,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           max={20}
           value={selectedShape.scaleX || 1}
           onChange={handleChange}
+          onBlur={updateWithSelecctedShape}
           step={0.1}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
@@ -42,6 +47,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           max={20}
           value={selectedShape.scaleY || 1}
           onChange={handleChange}
+          onBlur={updateWithSelecctedShape}
           step={0.1}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
@@ -56,6 +62,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           step={1}
           value={selectedShape.rotation || 0}
           onChange={handleChange}
+          onBlur={updateWithSelecctedShape}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           SKEW X
@@ -69,6 +76,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           step={1}
           value={selectedShape.skewX || 0}
           onChange={handleChange}
+          onBlur={updateWithSelecctedShape}
         />
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           SKEW Y
@@ -81,6 +89,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           max={180}
           step={1}
           value={selectedShape.skewY || 0}
+          onBlur={updateWithSelecctedShape}
           onChange={handleChange}
         />
       </ExpandableBox>
@@ -93,6 +102,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
             type="color"
             name="fill"
             value={selectedShape.fill || "#000000"}
+            onBlur={updateWithSelecctedShape}
             onChange={handleChange}
           />
           <p>{selectedShape.fill || "#23d997"}</p>
@@ -105,6 +115,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
             type="color"
             name="stroke"
             value={selectedShape.stroke || "#000000"}
+            onBlur={updateWithSelecctedShape}
             onChange={handleChange}
           />
           <p>{selectedShape.stroke || "#23d997"}</p>
@@ -120,6 +131,7 @@ const Rightbar = ({ selectedShape, setSelectedShape }) => {
           max={100}
           step={2}
           value={selectedShape.strokeWidth || 2}
+          onBlur={updateWithSelecctedShape}
           onChange={handleChange}
         />
       </ExpandableBox>

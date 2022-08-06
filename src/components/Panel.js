@@ -1,6 +1,7 @@
 //contextx
 import { controllerAtom } from "@/context/controller";
 import { newShapeAtom } from "@/context/newShape";
+import { selectedShapeAtom } from "@/context/selectedShape";
 // Libs
 import { useEffect, useRef, useDeferredValue, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -20,6 +21,7 @@ const Panel = ({ elements, mode }) => {
   // States
   const controller = useRecoilValue(controllerAtom);
   const [newShape, setNewShape] = useRecoilState(newShapeAtom);
+  const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
   const canvasRef = useRef();
 
   // For setting the position
@@ -66,10 +68,12 @@ const Panel = ({ elements, mode }) => {
         <svg {...position}>
           {elements.data
             .filter((a) => !a?.hidden)
+            .filter(a=>a.id!==selectedShape.id)
             .map((elm, i) => (
               <ShapeRenderer key={elm.id} {...elm} />
             ))}
           {newShape && <ShapeRenderer {...newShape} />}
+          {selectedShape && <ShapeRenderer {...selectedShape} />}
         </svg>
       </div>
       <StylesPicker newShape={newShape} mode={mode} setNewShape={setNewShape} />
