@@ -10,6 +10,23 @@
   letter-spacing: 0.05rem;
 }
 
+/* CUSTOM SCROLL BAR */
+body{
+  overflow: overlay;
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  dispay: none !important;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(172, 172, 172);
+}
+*::-webkit-scrollbar-thumb :hover {
+  background-color: rgb(100, 100, 100);
+}
+
 .canvas-element {
   transform-origin: center;
   transform-box: fill-box;
@@ -49,4 +66,38 @@
     -translate-y-1/2 
     cursor-pointer;
   }
+
+  .btn {
+    @apply bg-black 
+    text-white 
+    rounded-full 
+    p-3 
+    uppercase 
+    text-center
+    font-bold 
+    tracking-[.3em] 
+    disabled:border-2
+    hover:text-gray-700
+    cursor-pointer
+    transition;
+  }
+}
+
+@keyframes shrink {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.open-anim {
+  animation: shrink 500 liner 0 forwards;
+  background-color: red;
+}
+
+.close-anim {
+  animation: shrink 500 liner 0 forwards reverse;
+  background-color: pink;
 }

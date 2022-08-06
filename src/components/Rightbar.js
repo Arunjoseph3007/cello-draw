@@ -1,10 +1,14 @@
+import { useRef } from "react";
+import { ShapeRenderer } from "../renderers";
 import ExpandableBox from "./ExpandableBox";
+import ExportBox from "./ExportBox";
 
 const Rightbar = ({
   selectedShape,
   setSelectedShape,
   updateWithSelecctedShape,
 }) => {
+
   const handleChange = (e) => {
     setSelectedShape((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -17,10 +21,12 @@ const Rightbar = ({
     );
 
   return (
-    <div className="h-full w-1/5 flex flex-col gap-0">
+    <div className="h-full w-1/5 flex flex-col gap-0 max-h-[100%] overflow-y-scroll">
       <h1 className="text-2xl text-slate-600 p-2 border-b font-semibold">
         {selectedShape?.type}
       </h1>
+
+      {/* Transforms */}
       <ExpandableBox title={"Transform"}>
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           SCALE X
@@ -93,6 +99,8 @@ const Rightbar = ({
           onChange={handleChange}
         />
       </ExpandableBox>
+
+      {/* Colors */}
       <ExpandableBox title={"Colors"}>
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           FILL
@@ -135,6 +143,10 @@ const Rightbar = ({
           onChange={handleChange}
         />
       </ExpandableBox>
+
+      {/* Export Func */}
+      <ExportBox />
+
     </div>
   );
 };

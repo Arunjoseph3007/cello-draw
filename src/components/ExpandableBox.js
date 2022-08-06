@@ -6,7 +6,7 @@ export default function ExpandableBox({ children, title }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex flex-col px-2 gap-3">
+    <div className="flex flex-col px-2">
       <div className="flex items-center justify-between border-y py-2">
         <h1>{title}</h1>
         <span
@@ -16,7 +16,13 @@ export default function ExpandableBox({ children, title }) {
           {isOpen ? <MinusIcon /> : <PlusIcon />}
         </span>
       </div>
-      {isOpen && <div className="pb-3">{children}</div>}
+      <div
+        className={`py-3 transition-all overflow-y-hidden ${
+          !isOpen ? "max-h-0 py-0 pointer-events-none" : "max-h-screen pointer-events-auto"
+        }`}
+      >
+        {children}
+      </div>
     </div>
   );
 }

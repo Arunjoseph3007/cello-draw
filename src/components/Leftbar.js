@@ -18,7 +18,7 @@ const ICONS = {
 
 const Leftbar = ({ elements, selectedID, setSelectedID }) => {
   return (
-    <div className="h-full w-1/5 shadow-2xl">
+    <div className="h-full w-1/5 shadow-2xl  max-h-[100%] overflow-y-scroll">
       {elements.data.map((elm, i) => (
         <div
           className={`group flex items-center gap-4 p-2 border-b hover:bg-gray-300 ${

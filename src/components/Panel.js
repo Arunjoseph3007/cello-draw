@@ -68,12 +68,14 @@ const Panel = ({ elements, mode }) => {
         <svg {...position}>
           {elements.data
             .filter((a) => !a?.hidden)
-            .filter(a=>a.id!==selectedShape.id)
+            .filter((a) => a.id !== selectedShape?.id)
             .map((elm, i) => (
               <ShapeRenderer key={elm.id} {...elm} />
             ))}
           {newShape && <ShapeRenderer {...newShape} />}
-          {selectedShape && <ShapeRenderer {...selectedShape} />}
+          {selectedShape && (
+            <ShapeRenderer dataid="cello-draw-selected-shape" {...selectedShape} />
+          )}
         </svg>
       </div>
       <StylesPicker newShape={newShape} mode={mode} setNewShape={setNewShape} />

@@ -47,7 +47,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Topbar mode={mode} setMode={setMode} elements={elements} />
-      <div className="flex-1 flex justify-between">
+      <div className="flex-1 flex justify-between overflow-y-hidden">
         <Leftbar
           selectedID={selectedID}
           setSelectedID={setSelectedID}
