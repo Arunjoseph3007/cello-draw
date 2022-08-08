@@ -1,6 +1,7 @@
 import { CircleIcon } from "@/icons/Circle";
 import { DeleteIcon } from "@/icons/Delete";
 import { FreehandIcon } from "@/icons/Freehand";
+import { GroupIcon } from "@/icons/Group";
 import { LineIcon } from "@/icons/Line";
 import { OptionsIcon } from "@/icons/Options";
 import { PathIcon } from "@/icons/Path";
@@ -14,6 +15,7 @@ const ICONS = {
   FREEHAND: <FreehandIcon />,
   RECTANGLE: <RectangleIcon />,
   PATH: <PathIcon />,
+  GROUP: <GroupIcon />,
 };
 
 const Leftbar = ({ elements, selectedID, setSelectedID }) => {

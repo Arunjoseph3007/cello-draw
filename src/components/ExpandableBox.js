@@ -17,7 +17,7 @@ export default function ExpandableBox({ children, title }) {
         </span>
       </div>
       <div
-        className={`py-3 transition-all overflow-y-hidden ${
+        className={`py-3 transition-all duration-700 overflow-y-hidden ${
           !isOpen ? "max-h-0 py-0 pointer-events-none" : "max-h-screen pointer-events-auto"
         }`}
       >

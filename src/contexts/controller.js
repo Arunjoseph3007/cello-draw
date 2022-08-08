@@ -7,6 +7,7 @@ import { FREEHAND } from "@/controllers/freehand";
 import { POLYGON } from "@/controllers/polygon";
 import { RECTANGLE } from "@/controllers/rectangle";
 import { PATH } from "@/controllers/path";
+import { GROUP } from "@/controllers/group";
 
 const controllers = {
   LINE,
@@ -15,6 +16,7 @@ const controllers = {
   POLYGON,
   RECTANGLE,
   PATH,
+  GROUP,
 };
 
 export const controllerAtom = selector({

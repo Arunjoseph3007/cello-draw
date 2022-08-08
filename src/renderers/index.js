@@ -4,6 +4,8 @@ import { FreehandRenderer } from "./freehand";
 import { PolygonRenderer } from "./polygon";
 import { RectangleRenderer } from "./rectangle";
 import { PathRenderer } from "./path";
+import { GroupRenderer } from "./group";
+
 import Portal from "@/components/Portal";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -27,6 +29,7 @@ const Renderers = {
   POLYGON: PolygonRenderer,
   RECTANGLE: RectangleRenderer,
   PATH: PathRenderer,
+  GROUP: GroupRenderer,
 };
 
 export const ShapeRenderer = ({ type, ...props }) => {
@@ -63,8 +66,8 @@ export const ShapeRenderer = ({ type, ...props }) => {
         <Portal selector="#portal">
           <div
             onClick={(e) => {
-              console.log("hey");
               e.stopPropagation();
+              console.log("hey");
             }}
             className="absolute bg-transparent cursor-pointer border-[3px] border-dashed border-blue-400"
             style={{
