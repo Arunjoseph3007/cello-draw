@@ -1,29 +1,37 @@
 import { v4 } from "uuid";
 
+const ARRAY_OF_SHAPES = [
+  "circle",
+  "path",
+  "polyline",
+  "rect",
+  "line",
+  "polygon",
+];
+
 export const GROUP = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
 
-    console.log(e.target.id);
-    if (
-      !["circle", "path", "polyline", "rect", "line", "polygon"].includes(
-        e.target.tagName
-      )
-    )
-      return;
+    // Ensure that the click is on a svg element
+    if (!ARRAY_OF_SHAPES.includes(e.target.tagName)) return;
 
+    // Find that Shape
     const newChild = elements.data.find((a) => a.id === e.target.id);
+    if (!newChild) return;
 
-    elements.filter((a) => a.id !== newChild.id);
+    const id = newShape?.id || v4();
+
+    elements.updateById(newChild.id, { ...newChild, parentId: id });
 
     //For first touch
     if (!newShape) {
       setNewShape({
         type: "GROUP",
         status: 1,
-        id: v4(),
-        childShapes: [newChild],
+        id: id,
+        childShapesIds: [newChild.id],
       });
       return;
     }
@@ -31,21 +39,11 @@ export const GROUP = {
     //For subsequent touches
     setNewShape((prev) => ({
       ...prev,
-      childShapes: [...prev.childShapes, newChild],
+      childShapesIds: [...prev.childShapesIds, newChild.id],
     }));
   },
 
   onMouseMove: ({ e, position, newShape, setNewShape, elements }) => {
     return;
-
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-    setNewShape((prev) => {
-      const previousPoints = prev.points.slice(0, -1);
-
-      return {
-        ...prev,
-        points: [...previousPoints, { x, y }],
-      };
-    });
   },
 };

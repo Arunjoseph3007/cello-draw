@@ -8,7 +8,6 @@ const Rightbar = ({
   setSelectedShape,
   updateWithSelecctedShape,
 }) => {
-
   const handleChange = (e) => {
     setSelectedShape((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -101,7 +100,7 @@ const Rightbar = ({
       </ExpandableBox>
 
       {/* Colors */}
-      <ExpandableBox title={"Colors"}>
+      <ExpandableBox title={"Fill"}>
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           FILL
         </h3>
@@ -115,6 +114,8 @@ const Rightbar = ({
           />
           <p>{selectedShape.fill || "#23d997"}</p>
         </div>
+      </ExpandableBox>
+      <ExpandableBox title="Stroke">
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           STROKE
         </h3>
@@ -146,7 +147,6 @@ const Rightbar = ({
 
       {/* Export Func */}
       <ExportBox />
-
     </div>
   );
 };

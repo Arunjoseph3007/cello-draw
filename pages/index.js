@@ -27,16 +27,17 @@ export default function Home() {
     setSelectedShape(elements.data.find((a) => a.id === selectedID));
   }, [selectedID]);
 
-  const updateWithSelecctedShape=() => {
-    if (!selectedShape) return;
-    const index = elements.data.findIndex(
-      (a) => a.id === deferredSelectedShape.id
-    );
+  const updateWithSelecctedShape = () => {
+    if (!selectedShape || !deferredSelectedShape) return;
+    // const index = elements.data.findIndex(
+    //   (a) => a.id === deferredSelectedShape.id
+    // );
 
-    if (!deferredSelectedShape || index === -1) return;
+    // if (!deferredSelectedShape || index === -1) return;
 
-    elements.update(index, deferredSelectedShape);
-  }
+    // elements.update(index, deferredSelectedShape);
+    elements.updateById(deferredSelectedShape.id, deferredSelectedShape);
+  };
 
   // U I
   return (

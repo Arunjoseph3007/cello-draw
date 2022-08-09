@@ -58,8 +58,8 @@ export const ShapeRenderer = ({ type, ...props }) => {
         {...props}
         transform={transform}
         className="canvas-element"
-        fill={props.fill || "#ffff00"}
-        stroke={props.stroke || "#23d997"}
+        fill={props.fill || "transparent"}
+        stroke={props.stroke || "#000000"}
         strokeWidth={props.strokeWidth || 2}
       />
       {selectedID === props.id && (
@@ -75,8 +75,6 @@ export const ShapeRenderer = ({ type, ...props }) => {
               width: portalStyles.width,
               top: portalStyles.top,
               left: portalStyles.left,
-              bottom: portalStyles.bottom,
-              right: portalStyles.right,
             }}
           >
             <div
