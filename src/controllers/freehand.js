@@ -14,6 +14,8 @@ export const FREEHAND = {
         ],
         type: "FREEHAND",
         status: 1,
+        strokeWidth: 1,
+        smoothing: 1,
         id: v4(),
       });
     }

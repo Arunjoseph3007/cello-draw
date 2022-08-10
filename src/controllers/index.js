@@ -1,11 +1,14 @@
-export class Shape {
-  constructor(props) {
-    this.status = 1;
-  }
+import { FreehandControls } from "@/renderers/freehand";
+import { RectangleControls } from "@/renderers/rectangle";
 
-  finish() {
-    this.status = -1;
-    return this;
-  }
+const DEFAULT = () => <></>;
 
-}
+export const EditControllers = {
+  FREEHAND: FreehandControls,
+  RECTANGLE: RectangleControls,
+  CIRCLE: DEFAULT,
+  LINE: DEFAULT,
+  POLYGON: DEFAULT,
+  PATH: DEFAULT,
+  GROUP: DEFAULT,
+};

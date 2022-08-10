@@ -14,6 +14,7 @@ export const RECTANGLE = {
         width: 0,
         height: 0,
         type: "RECTANGLE",
+        corners: 0,
         status: 1,
         id: v4(),
       });

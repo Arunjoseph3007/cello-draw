@@ -1,7 +1,6 @@
-import { useRef } from "react";
-import { ShapeRenderer } from "../renderers";
 import ExpandableBox from "./ExpandableBox";
 import ExportBox from "./ExportBox";
+import { EditControllers } from "../controllers";
 
 const Rightbar = ({
   selectedShape,
@@ -19,13 +18,15 @@ const Rightbar = ({
       </div>
     );
 
+  const Editor = EditControllers[selectedShape.type];
+
   return (
     <div className="h-full w-1/5 flex flex-col gap-0 max-h-[100%] overflow-y-scroll">
       <h1 className="text-2xl text-slate-600 p-2 border-b font-semibold">
         {selectedShape?.type}
       </h1>
 
-      {/* Transforms */}
+      {/*//?  Transforms */}
       <ExpandableBox title={"Transform"}>
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           SCALE X
@@ -99,7 +100,7 @@ const Rightbar = ({
         />
       </ExpandableBox>
 
-      {/* Colors */}
+      {/*//? Colors */}
       <ExpandableBox title={"Fill"}>
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           FILL
@@ -116,7 +117,7 @@ const Rightbar = ({
         </div>
       </ExpandableBox>
 
-      {/* Stroke */}
+      {/*//? Stroke */}
       <ExpandableBox title="Stroke">
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           STROKE
@@ -147,7 +148,13 @@ const Rightbar = ({
         />
       </ExpandableBox>
 
-      {/* Export Func */}
+      <Editor
+        selectedShape={setSelectedShape}
+        handleChange={handleChange}
+        updateWithSelecctedShape={updateWithSelecctedShape}
+      />
+
+      {/*//? Export Func */}
       <ExportBox />
     </div>
   );
