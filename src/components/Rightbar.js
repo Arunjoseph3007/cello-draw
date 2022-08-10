@@ -115,6 +115,8 @@ const Rightbar = ({
           <p>{selectedShape.fill || "#23d997"}</p>
         </div>
       </ExpandableBox>
+
+      {/* Stroke */}
       <ExpandableBox title="Stroke">
         <h3 className="text-sm font-semibold text-gray-400 tracking-wideest">
           STROKE
