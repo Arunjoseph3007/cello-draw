@@ -8,6 +8,7 @@ import { POLYGON } from "@/controllers/polygon";
 import { RECTANGLE } from "@/controllers/rectangle";
 import { PATH } from "@/controllers/path";
 import { GROUP } from "@/controllers/group";
+import { MOVE } from "@/controllers/move";
 
 const controllers = {
   LINE,
@@ -17,6 +18,7 @@ const controllers = {
   RECTANGLE,
   PATH,
   GROUP,
+  MOVE,
 };
 
 export const controllerAtom = selector({

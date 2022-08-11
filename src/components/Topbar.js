@@ -9,6 +9,7 @@ import { CloseIcon } from "@/icons/Close";
 import { RectangleIcon } from "@/icons/Rectangle";
 import { PathIcon } from "@/icons/Path";
 import { GroupIcon } from "@/icons/Group";
+import { MoveIcon } from "@/icons/Move";
 
 const Topbar = ({ mode, setMode, elements }) => {
   const buttons = [
@@ -19,6 +20,7 @@ const Topbar = ({ mode, setMode, elements }) => {
     { title: "RECTANGLE", icon: <RectangleIcon /> },
     { title: "PATH", icon: <PathIcon /> },
     { title: "GROUP", icon: <GroupIcon /> },
+    { title: "MOVE", icon: <MoveIcon /> },
   ];
 
   return (

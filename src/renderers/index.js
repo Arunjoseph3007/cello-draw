@@ -55,6 +55,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
     <>
       <TypeRenderer
         shapeRef={shapeRef}
+        draggable
         {...props}
         transform={transform}
         className="canvas-element"
