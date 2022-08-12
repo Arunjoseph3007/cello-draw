@@ -1,11 +1,13 @@
 import { useRecoilState } from "recoil";
 import { elementsAtom } from "@/context/elements";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { selectedShapeAtom } from "@/context/selectedShape";
 
 const capacity = 20;
 
 export const useArray = () => {
   const [array, setArray] = useRecoilState(elementsAtom);
+  const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
   const historyRef = useRef([]);
   const pointerRef = useRef(-1);
 
@@ -55,6 +57,10 @@ export const useArray = () => {
 
   const remove = (i) => {
     const id = array[i].id;
+
+    if (id === selectedShape.id) {
+      setSelectedShape(null);
+    }
 
     if (array[i].type !== "GROUP") {
       setArrayWithHistory((a) => [

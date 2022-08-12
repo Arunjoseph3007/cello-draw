@@ -10,12 +10,14 @@ import { ShapeRenderer } from "@/renderers/index";
 import { useHotkeys } from "@/hooks/useHotkeys";
 import StylesPicker from "./StylePicker";
 import { useEventListener } from "@/hooks/useEventListener";
+import { statusAtom } from "@/context/status";
 
 const Panel = ({ elements, mode }) => {
   /// States
   const controller = useRecoilValue(controllerAtom);
   const [newShape, setNewShape] = useRecoilState(newShapeAtom);
   const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
+  const [status, setStatus] = useRecoilState(statusAtom);
   const [position, setPosition] = useState({
     width: 700,
     height: 500,
@@ -48,6 +50,13 @@ const Panel = ({ elements, mode }) => {
     handleResize();
   }, []);
 
+  // For checking if it is a click or a drag
+  useEffect(() => {
+    if (status.isDragging) {
+      setNewShape(null);
+    }
+  }, [status]);
+
   //When the mode is changed reset the new shape
   useEffect(() => setNewShape(null), [mode]);
 
@@ -69,6 +78,8 @@ const Panel = ({ elements, mode }) => {
 
   // To update the position on mouse movement
   const handleMouseMove = (e) => {
+    if (status.isDragging) return;
+
     if (mode === "MOVE") {
       controller.onMouseMove({ e, position, setPosition });
     } else {
@@ -88,6 +99,8 @@ const Panel = ({ elements, mode }) => {
 
   //Handle mouse clicks
   const handleMouseDown = (e) => {
+    if (status.isDragging) return;
+
     if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey || e.button !== 0)
       return;
 

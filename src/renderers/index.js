@@ -11,6 +11,9 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { selectedIDAtom } from "@/context/selectedID";
 import { selectedShapeAtom } from "@/context/selectedShape";
+import { elementsAtom } from "@/context/elements";
+import { useArray } from "@/hooks/useArray";
+import { statusAtom } from "@/context/status";
 
 const NONE = 0,
   FULL = "100%",
@@ -37,6 +40,8 @@ const Renderers = {
 export const ShapeRenderer = ({ type, ...props }) => {
   const [selectedID, setSelectedID] = useRecoilState(selectedIDAtom);
   const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
+  const [status, setStatus] = useRecoilState(statusAtom);
+  const elements = useArray();
   const [engaged, setEngaged] = useState(false);
   const [anchor, setAnchor] = useState(null);
 
@@ -47,12 +52,50 @@ export const ShapeRenderer = ({ type, ...props }) => {
 
   let portalStyles = shapeRef?.current?.getBoundingClientRect() || DEFAULT_BOX;
 
+  const handleDragStart = (e, dir) => {
+    setAnchor({ x: e.clientX, y: e.clientY });
+    setStatus((prev) => ({ ...prev, isDragging: true }));
+  };
+
+  const handleDragEnd = (e, dir = "", lock = "") => {
+    e.stopPropagation();
+
+    const scaleY = props.scaleY ?? 1;
+    const scaleX = props.scaleX ?? 1;
+    const transformX = props.transformX ?? 0;
+    const transformY = props.transformY ?? 0;
+    const actualHeight = portalStyles.height / scaleY;
+    const actualWidth = portalStyles.width / scaleX;
+    const increaseHeight = e.clientY - anchor.y;
+    const increaseWidth = e.clientX - anchor.x;
+    const newHeight = portalStyles.height + increaseHeight;
+    const newWidth = portalStyles.width + increaseWidth;
+
+    let options = {};
+    if (dir.includes("x") && newWidth / actualWidth > 0) {
+      options.scaleX = newWidth / actualWidth;
+      options.transformX = transformX + increaseWidth / 2;
+    }
+    if (dir.includes("y") && newHeight / actualHeight > 0) {
+      options.scaleY = newHeight / actualHeight;
+      options.transformY = transformY + increaseHeight / 2;
+    }
+
+    setAnchor(null);
+
+    setSelectedShape((prev) => ({ ...prev, ...options }));
+
+    elements.updateById(selectedID, { ...selectedShape, ...options });
+
+    setStatus((prev) => ({ ...prev, isDragging: false }));
+  };
+
   const transform = `
-  translate(${0} ${0}) 
-  scale(${props.scaleX || 1} ${props.scaleY || 1}) 
-  rotate(${props.rotation || 0})  
-  skewX(${props.skewX || 0}) 
-  skewY(${props.skewY || 0})`;
+  translate(${props.transformX ?? 0} ${props.transformY ?? 0}) 
+  scale(${props.scaleX ?? 1} ${props.scaleY ?? 1}) 
+  rotate(${props.rotation ?? 0})  
+  skewX(${props.skewX ?? 0}) 
+  skewY(${props.skewY ?? 0})`;
 
   const TypeRenderer = Renderers[type];
 
@@ -94,6 +137,9 @@ export const ShapeRenderer = ({ type, ...props }) => {
             <div
               className="small-black-box cursor-se-resize"
               style={{ top: FULL, left: FULL }}
+              draggable
+              onDragStart={handleDragStart}
+              onDragEnd={(e) => handleDragEnd(e, "xy", "xy")}
             />
             <div
               className="absolute bg-blue-400 text-white text-xs px-2 -translate-x-1/2 -translate-y-1/2 cursor-n-resize"
@@ -103,28 +149,8 @@ export const ShapeRenderer = ({ type, ...props }) => {
                 transform: "translate(-50%, -50%) rotateZ(0turn)",
               }}
               draggable
-              onDragStart={(e) => {
-                e.stopPropagation();
-
-                setAnchor({ x: e.clientX, y: e.clientY });
-              }}
-              onDragEnd={(e) => {
-                e.stopPropagation();
-
-                const scaleY = selectedShape.scaleY || 1;
-                const actualHeight = portalStyles.height / scaleY / 2;
-                const increase = e.clientY - anchor.y;
-                const newHeight = portalStyles.height / 2 + increase;
-
-                setAnchor(null);
-
-                if (newHeight / actualHeight > 0) {
-                  setSelectedShape((prev) => ({
-                    ...prev,
-                    scaleY: newHeight / actualHeight,
-                  }));
-                }
-              }}
+              onDragStart={handleDragStart}
+              onDragEnd={(e) => handleDragEnd(e, "y")}
             >
               {roundOff(portalStyles.height)}
             </div>
@@ -136,28 +162,8 @@ export const ShapeRenderer = ({ type, ...props }) => {
                 transform: "translate(-50%, -50%) rotateZ(90deg) ",
               }}
               draggable
-              onDragStart={(e) => {
-                e.stopPropagation();
-
-                setAnchor({ x: e.clientX, y: e.clientY });
-              }}
-              onDragEnd={(e) => {
-                e.stopPropagation();
-
-                const scaleX = selectedShape.scaleX || 1;
-                const actualWidth = portalStyles.width / scaleX / 2;
-                const increase = e.clientX - anchor.x;
-                const newWidth = portalStyles.width / 2 + increase;
-
-                setAnchor(null);
-
-                if (newWidth / actualWidth > 0) {
-                  setSelectedShape((prev) => ({
-                    ...prev,
-                    scaleX: newWidth / actualWidth,
-                  }));
-                }
-              }}
+              onDragStart={handleDragStart}
+              onDragEnd={(e) => handleDragEnd(e, "x")}
             >
               {roundOff(portalStyles.width)}
             </div>
@@ -168,4 +174,4 @@ export const ShapeRenderer = ({ type, ...props }) => {
   );
 };
 
-const roundOff = (num) => Math.floor(num * 100) / 100;
+const roundOff = (num) => Math.floor(num * 1000) / 1000;
