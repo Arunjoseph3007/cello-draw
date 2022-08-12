@@ -3,7 +3,6 @@ export const MOVE = {
     //Get the positon
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
 
-    console.log("haha");
 
     if (!position.engaged) {
       setPosition((prev) => ({ ...prev, engaged: true, anchor: { x, y } }));
@@ -16,8 +15,6 @@ export const MOVE = {
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
 
     if (!position.engaged) return;
-
-    console.log("Yes");
 
     setPosition((prev) => ({
       ...prev,

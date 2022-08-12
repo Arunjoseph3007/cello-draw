@@ -7,8 +7,8 @@ import Topbar from "@/components/Topbar";
 //Hooks
 import { useArray } from "@/hooks/useArray";
 //Third party libs
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useRecoilState } from "recoil";
+import { useDeferredValue, useEffect, useState } from "react";
 //States
 import { modeAtom } from "@/context/mode";
 import { selectedShapeAtom } from "@/context/selectedShape";
@@ -29,13 +29,7 @@ export default function Home() {
 
   const updateWithSelecctedShape = () => {
     if (!selectedShape || !deferredSelectedShape) return;
-    // const index = elements.data.findIndex(
-    //   (a) => a.id === deferredSelectedShape.id
-    // );
-
-    // if (!deferredSelectedShape || index === -1) return;
-
-    // elements.update(index, deferredSelectedShape);
+    
     elements.updateById(deferredSelectedShape.id, deferredSelectedShape);
   };
 
@@ -48,7 +42,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Topbar mode={mode} setMode={setMode} elements={elements} />
-      <div className="flex-1 flex justify-between overflow-y-hidden">
+      <div className="flex-1 flex justify-between overflow-hidden">
         <Leftbar
           selectedID={selectedID}
           setSelectedID={setSelectedID}

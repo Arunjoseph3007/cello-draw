@@ -13,7 +13,7 @@ const Rightbar = ({
 
   if (!selectedShape)
     return (
-      <div className="h-full w-1/5 z-20 dead-center">
+      <div className="h-full w-1/5 z-20 shadow-2xl dead-center">
         <h1 className="text-xl text-slate-400 ">No Shape selected</h1>
       </div>
     );
@@ -21,7 +21,7 @@ const Rightbar = ({
   const Editor = EditControllers[selectedShape.type];
 
   return (
-    <div className="h-full w-1/5 z-20 flex flex-col gap-0 max-h-[100%] overflow-y-scroll">
+    <div className="h-full w-1/5 z-20 flex flex-col gap-0 max-h-[100%] shadow-2xl overflow-y-scroll">
       <h1 className="text-2xl text-slate-600 p-2 border-b font-semibold">
         {selectedShape?.type}
       </h1>

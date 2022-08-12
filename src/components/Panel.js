@@ -35,6 +35,8 @@ const Panel = ({ elements, mode }) => {
   };
 
   const escapeShape = () => {
+    setSelectedShape(null);
+
     if (!newShape) return;
 
     elements.push({ ...newShape, status: -1 });
@@ -55,16 +57,24 @@ const Panel = ({ elements, mode }) => {
   // To match any resizing
   useEventListener("resize", handleResize);
 
+  useEventListener("mousewheel", (e) => {
+    if (mode !== "MOVE") return;
+
+    if (e.deltaY > 0 && position.zoom < 10) {
+      setPosition((prev) => ({ ...prev, zoom: prev.zoom + 0.05 }));
+    } else if (e.deltaY < 0 && position.zoom > 0.1) {
+      setPosition((prev) => ({ ...prev, zoom: prev.zoom - 0.05 }));
+    }
+  });
+
   // To update the position on mouse movement
   const handleMouseMove = (e) => {
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
-
     if (mode === "MOVE") {
       controller.onMouseMove({ e, position, setPosition });
     } else {
       const adjustedPosition = {
-        x: position.x + position.panX,
-        y: position.y + position.panY,
+        x: (position.x + position.panX) * position.zoom,
+        y: (position.y + position.panY) * position.zoom,
       };
       controller.onMouseMove({
         e,
@@ -80,14 +90,13 @@ const Panel = ({ elements, mode }) => {
   const handleMouseDown = (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey || e.button !== 0)
       return;
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
 
     if (mode === "MOVE") {
       controller.onMouseDown({ e, position, setPosition });
     } else {
       const adjustedPosition = {
-        x: position.x + position.panX,
-        y: position.y + position.panY,
+        x: (position.x + position.panX) * position.zoom,
+        y: (position.y + position.panY) * position.zoom,
       };
       controller.onMouseDown({
         e,
@@ -107,18 +116,24 @@ const Panel = ({ elements, mode }) => {
     >
       <div
         ref={canvasRef}
-        className={`canvas absolute translate-x-0 top-1/2 left-1/2 bg-white ${
-          mode === "MOVE" ? "cursor-move" : "cursor-crosshair"
+        className={`canvas absolute top-1/2 left-1/2 bg-white ${
+          mode === "MOVE"
+            ? position.engaged
+              ? "cursor-move"
+              : "cursor-grabbing"
+            : "cursor-crosshair"
         }`}
         style={{
           height: position.height,
           width: position.width,
           transform: `
-          scaleX(${position.zoom}) 
-          scaleY(${position.zoom}) 
           translate(
             ${position.panX - position.width / 2}px, 
-            ${position.panY - position.height / 2}px)`,
+            ${position.panY - position.height / 2}px
+          )
+          scaleX(${position.zoom}) 
+          scaleY(${position.zoom}) 
+          `,
         }}
       >
         <svg
