@@ -77,7 +77,7 @@ export default function ExportBox() {
         <canvas
           width={700}
           height={500}
-          style={{ position: "absolute", opacity: 0 }}
+          // style={{ position: "absolute", opacity: 0 }}
           ref={canvasRef}
         />
       </div>

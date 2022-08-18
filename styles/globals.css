@@ -67,7 +67,7 @@ body{
     cursor-pointer;
   }
 
-  .btn {
+  /* .btn {
     @apply bg-black 
     text-white 
     rounded-full 
@@ -80,24 +80,5 @@ body{
     hover:text-gray-700
     cursor-pointer
     transition;
-  }
-}
-
-@keyframes shrink {
-  0% {
-    transform: scaleY(0);
-  }
-  100% {
-    transform: scaleY(1);
-  }
-}
-
-.open-anim {
-  animation: shrink 500 liner 0 forwards;
-  background-color: red;
-}
-
-.close-anim {
-  animation: shrink 500 liner 0 forwards reverse;
-  background-color: pink;
+  } */
 }

@@ -21,7 +21,7 @@ const ICONS = {
 
 const Leftbar = ({ elements, selectedID, setSelectedID }) => {
   return (
-    <div className="h-full w-1/5 z-20 shadow-2xl  max-h-[100%] overflow-y-scroll">
+    <div className="h-full w-1/5 z-20 shadow-2xl bg-white max-h-[100%] overflow-y-scroll">
       {elements.gatherIntoGroups().map((elm, i) => (
         <ShapeTreeElement
           key={elm.id}

@@ -14,6 +14,8 @@ import { selectedShapeAtom } from "@/context/selectedShape";
 import { elementsAtom } from "@/context/elements";
 import { useArray } from "@/hooks/useArray";
 import { statusAtom } from "@/context/status";
+import { CrosshairIcon } from "@/icons/Crosshair";
+import { UndoIcon } from "@/icons/Undo";
 
 const NONE = 0,
   FULL = "100%",
@@ -42,7 +44,6 @@ export const ShapeRenderer = ({ type, ...props }) => {
   const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
   const [status, setStatus] = useRecoilState(statusAtom);
   const elements = useArray();
-  const [engaged, setEngaged] = useState(false);
   const [anchor, setAnchor] = useState(null);
 
   // Basic safety
@@ -90,6 +91,48 @@ export const ShapeRenderer = ({ type, ...props }) => {
     setStatus((prev) => ({ ...prev, isDragging: false }));
   };
 
+  const handleReposition = (e) => {
+    const xDiff = e.clientX - anchor.x;
+    const yDiff = e.clientY - anchor.y;
+
+    const transformX = props.transformX ?? 0;
+    const transformY = props.transformY ?? 0;
+
+    const rePositionedShape = {
+      ...selectedShape,
+      transformX: transformX + xDiff,
+      transformY: transformY + yDiff,
+    };
+
+    setAnchor(null);
+
+    setSelectedShape((prev) => ({ ...prev, ...rePositionedShape }));
+
+    elements.updateById(selectedID, rePositionedShape);
+
+    setStatus((prev) => ({ ...prev, isDragging: false }));
+  };
+
+  const handleRotation = (e) => {
+    const xDiff = e.clientX - anchor.x;
+    const yDiff = e.clientY - anchor.y;
+
+    const rotation = props.rotation ?? 0;
+
+    const rotatedShape = {
+      ...selectedShape,
+      rotation: rotation + Math.atan(yDiff / xDiff),
+    };
+
+    setAnchor(null);
+
+    setSelectedShape((prev) => ({ ...prev, ...rotatedShape }));
+
+    elements.updateById(selectedID, rotatedShape);
+
+    setStatus((prev) => ({ ...prev, isDragging: false }));
+  };
+
   const transform = `
   translate(${props.transformX ?? 0} ${props.transformY ?? 0}) 
   scale(${props.scaleX ?? 1} ${props.scaleY ?? 1}) 
@@ -113,6 +156,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
       />
       {(selectedID === props.id || props.highlighted) && (
         <Portal selector="#portal">
+          {/* //@ Selection box */}
           <div
             className="absolute pointer-events-auto bg-transparent border-[3px] border-dashed border-blue-400"
             style={{
@@ -122,6 +166,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
               left: portalStyles.left,
             }}
           >
+            {/* //@ Four corner boxes */}
             <div
               className="small-black-box cursor-nw-resize"
               style={{ top: NONE, left: NONE }}
@@ -141,12 +186,32 @@ export const ShapeRenderer = ({ type, ...props }) => {
               onDragStart={handleDragStart}
               onDragEnd={(e) => handleDragEnd(e, "xy", "xy")}
             />
+
+            {/* //@ Position Transform */}
+            <div
+              draggable
+              onDragStart={handleDragStart}
+              onDragEnd={handleReposition}
+              className="absolute left-1/2 -translate-x-5 -translate-y-8 cursor-move"
+              children={<CrosshairIcon />}
+            />
+
+            {/* //@ Rotation Transform */}
+            <div
+              draggable
+              onDragStart={handleDragStart}
+              onDragEnd={handleRotation}
+              className="absolute left-1/2 translate-x-5 -translate-y-8 cursor-move"
+              children={<UndoIcon />}
+            />
+
+            {/* //@ Height resize */}
             <div
               className="absolute bg-blue-400 text-white text-xs px-2 -translate-x-1/2 -translate-y-1/2 cursor-n-resize"
               style={{
                 top: FULL,
                 left: HALF,
-                transform: "translate(-50%, -50%) rotateZ(0turn)",
+                transform: "translate(-50%, -50%) rotateZ(0deg)",
               }}
               draggable
               onDragStart={handleDragStart}
@@ -154,6 +219,8 @@ export const ShapeRenderer = ({ type, ...props }) => {
             >
               {roundOff(portalStyles.height)}
             </div>
+
+            {/* // @ Widt resize */}
             <div
               className="absolute bg-blue-400  text-white text-xs px-2 cursor-w-resize"
               style={{

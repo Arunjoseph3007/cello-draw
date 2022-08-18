@@ -1,5 +1,4 @@
 import { CircleIcon } from "@/icons/Circle";
-import { CurveIcon } from "@/icons/Curve";
 import { LineIcon } from "@/icons/Line";
 import { PolygonIcon } from "@/icons/Polygon";
 import { FreehandIcon } from "@/icons/Freehand";
@@ -10,6 +9,9 @@ import { RectangleIcon } from "@/icons/Rectangle";
 import { PathIcon } from "@/icons/Path";
 import { GroupIcon } from "@/icons/Group";
 import { MoveIcon } from "@/icons/Move";
+
+import { useContext } from "react";
+import { AuthContext } from "@/context/authContext";
 
 const Topbar = ({ mode, setMode, elements }) => {
   const buttons = [
@@ -22,6 +24,10 @@ const Topbar = ({ mode, setMode, elements }) => {
     { title: "GROUP", icon: <GroupIcon /> },
     { title: "MOVE", icon: <MoveIcon /> },
   ];
+
+  const auth = useContext(AuthContext);
+
+  console.log(auth.user);
 
   return (
     <div className="flex justify-between items-center shadow-md px-4 bg-black text-white">
@@ -49,6 +55,38 @@ const Topbar = ({ mode, setMode, elements }) => {
         <button onClick={elements.redo} className="p-3 hover:bg-blue-400">
           <RedoIcon />
         </button>
+
+        {/* //? User info and profile pic */}
+        {auth.user ? (
+          <div className="dropdown dropdown-left flex gap-3 items-center rounded-lg px-3 cursor-pointer hover:bg-gray-600">
+            <h2 tabIndex={0} className="text-md m-1">
+              {auth?.user?.user_metadata?.user_name}
+            </h2>
+            <img
+              tabIndex={0}
+              className="w-8 aspect-square rounded-full"
+              src={auth?.user?.user_metadata?.avatar_url}
+            />
+            <div className="dropdown-content menu p-5 shadow bg-base-100 rounded-md flex flex-col items-center">
+              <img
+                tabIndex={0}
+                className="w-16 aspect-square rounded-full"
+                src={auth?.user?.user_metadata?.avatar_url}
+              />
+              <h2 className="text-xl m-1">
+                {auth?.user?.user_metadata?.user_name}
+              </h2>
+              <h2 className="text-sm m-1">
+                {auth?.user?.email}
+              </h2>
+              <button onClick={auth.signOut} className="btn btn-primary my-5 w-full">Sign Out</button>
+            </div>
+          </div>
+        ) : (
+          <button className="btn" onClick={auth.signIn}>
+            Sign In
+          </button>
+        )}
       </div>
     </div>
   );
