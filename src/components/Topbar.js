@@ -13,6 +13,8 @@ import { MoveIcon } from "@/icons/Move";
 import { useContext } from "react";
 import { AuthContext } from "@/context/authContext";
 
+import Link from "next/link";
+
 const Topbar = ({ mode, setMode, elements }) => {
   const buttons = [
     { title: "LINE", icon: <LineIcon /> },
@@ -26,8 +28,6 @@ const Topbar = ({ mode, setMode, elements }) => {
   ];
 
   const auth = useContext(AuthContext);
-
-  console.log(auth.user);
 
   return (
     <div className="flex justify-between items-center shadow-md px-4 bg-black text-white">
@@ -68,22 +68,27 @@ const Topbar = ({ mode, setMode, elements }) => {
               src={auth?.user?.user_metadata?.avatar_url}
             />
             <div className="dropdown-content menu p-5 shadow bg-base-100 rounded-md flex flex-col items-center">
-              <img
-                tabIndex={0}
-                className="w-16 aspect-square rounded-full"
-                src={auth?.user?.user_metadata?.avatar_url}
-              />
+              <Link passHref href={"/profile"}>
+                <img
+                  tabIndex={0}
+                  className="w-16 aspect-square rounded-full"
+                  src={auth?.user?.user_metadata?.avatar_url}
+                />
+              </Link>
               <h2 className="text-xl m-1">
                 {auth?.user?.user_metadata?.user_name}
               </h2>
-              <h2 className="text-sm m-1">
-                {auth?.user?.email}
-              </h2>
-              <button onClick={auth.signOut} className="btn btn-primary my-5 w-full">Sign Out</button>
+              <h2 className="text-sm m-1">{auth?.user?.email}</h2>
+              <button
+                onClick={auth.signOut}
+                className="btn btn-primary my-5 w-full"
+              >
+                Sign Out
+              </button>
             </div>
           </div>
         ) : (
-          <button className="btn" onClick={auth.signIn}>
+          <button className="btn btn-primary rounded-none" onClick={auth.signIn}>
             Sign In
           </button>
         )}

@@ -46,14 +46,16 @@ export const ShapeRenderer = ({ type, ...props }) => {
   const elements = useArray();
   const [anchor, setAnchor] = useState(null);
 
-  // Basic safety
+  //@ Basic safety
   if (!type) return;
 
   const shapeRef = useRef();
 
   let portalStyles = shapeRef?.current?.getBoundingClientRect() || DEFAULT_BOX;
 
-  const handleDragStart = (e, dir) => {
+  //$ handles all drag start events
+  const handleDragStart = (e) => {
+    //@ Sets the acnchor coordinates and saves a copy of current selectedShape and portalStyles
     setAnchor({
       x: e.clientX,
       y: e.clientY,
@@ -63,7 +65,11 @@ export const ShapeRenderer = ({ type, ...props }) => {
     setStatus((prev) => ({ ...prev, isDragging: true }));
   };
 
+  //$ Handle for resize (height, width and both)
   const handleDragEnd = (e, dir = "", isDrag = false) => {
+    /// e contains the event
+    /// dir holds on which axis the resize must be done
+    /// isDrag is false on dragend events or true otherwise
     e.stopPropagation();
 
     const scaleY = anchor.shape.scaleY ?? 1;
@@ -98,7 +104,11 @@ export const ShapeRenderer = ({ type, ...props }) => {
     setStatus((prev) => ({ ...prev, isDragging: false }));
   };
 
+  //$ Handle drag to reposition
   const handleReposition = (e, isDrag = false) => {
+    /// e contains the event
+    /// isDrag is false on dragend events or true other
+
     const xDiff = e.clientX - anchor.x;
     const yDiff = e.clientY - anchor.y;
 
@@ -122,7 +132,11 @@ export const ShapeRenderer = ({ type, ...props }) => {
     setStatus((prev) => ({ ...prev, isDragging: false }));
   };
 
+  //$ Handle rotation
   const handleRotation = (e, isDrag = false) => {
+    /// e contains the event
+    /// isDrag is false on dragend events or true other
+
     const xDiff = e.clientX - anchor.x;
     const yDiff = e.clientY - anchor.y;
 
