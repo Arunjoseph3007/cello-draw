@@ -9,6 +9,7 @@
       "@/shapes/*":["src/shapes/*"],
       "@/renderers/*":["src/renderers/*"],
       "@/utils/*":["src/utils/*"],
+      "@/lib/*":["src/lib/*"],
       "@/icons/*":["public/icons/*"],
     }
   }

@@ -54,23 +54,28 @@ export const ShapeRenderer = ({ type, ...props }) => {
   let portalStyles = shapeRef?.current?.getBoundingClientRect() || DEFAULT_BOX;
 
   const handleDragStart = (e, dir) => {
-    setAnchor({ x: e.clientX, y: e.clientY });
+    setAnchor({
+      x: e.clientX,
+      y: e.clientY,
+      shape: selectedShape,
+      portal: portalStyles,
+    });
     setStatus((prev) => ({ ...prev, isDragging: true }));
   };
 
-  const handleDragEnd = (e, dir = "", lock = "") => {
+  const handleDragEnd = (e, dir = "", isDrag = false) => {
     e.stopPropagation();
 
-    const scaleY = props.scaleY ?? 1;
-    const scaleX = props.scaleX ?? 1;
-    const transformX = props.transformX ?? 0;
-    const transformY = props.transformY ?? 0;
-    const actualHeight = portalStyles.height / scaleY;
-    const actualWidth = portalStyles.width / scaleX;
+    const scaleY = anchor.shape.scaleY ?? 1;
+    const scaleX = anchor.shape.scaleX ?? 1;
+    const transformX = anchor.shape.transformX ?? 0;
+    const transformY = anchor.shape.transformY ?? 0;
+    const actualHeight = anchor.portal.height / scaleY;
+    const actualWidth = anchor.portal.width / scaleX;
     const increaseHeight = e.clientY - anchor.y;
     const increaseWidth = e.clientX - anchor.x;
-    const newHeight = portalStyles.height + increaseHeight;
-    const newWidth = portalStyles.width + increaseWidth;
+    const newHeight = anchor.portal.height + increaseHeight;
+    const newWidth = anchor.portal.width + increaseWidth;
 
     let options = {};
     if (dir.includes("x") && newWidth / actualWidth > 0) {
@@ -82,21 +87,23 @@ export const ShapeRenderer = ({ type, ...props }) => {
       options.transformY = transformY + increaseHeight / 2;
     }
 
-    setAnchor(null);
-
     setSelectedShape((prev) => ({ ...prev, ...options }));
+
+    if (isDrag) return;
+
+    setAnchor(null);
 
     elements.updateById(selectedID, { ...selectedShape, ...options });
 
     setStatus((prev) => ({ ...prev, isDragging: false }));
   };
 
-  const handleReposition = (e) => {
+  const handleReposition = (e, isDrag = false) => {
     const xDiff = e.clientX - anchor.x;
     const yDiff = e.clientY - anchor.y;
 
-    const transformX = props.transformX ?? 0;
-    const transformY = props.transformY ?? 0;
+    const transformX = anchor.shape.transformX ?? 0;
+    const transformY = anchor.shape.transformY ?? 0;
 
     const rePositionedShape = {
       ...selectedShape,
@@ -104,29 +111,33 @@ export const ShapeRenderer = ({ type, ...props }) => {
       transformY: transformY + yDiff,
     };
 
-    setAnchor(null);
-
     setSelectedShape((prev) => ({ ...prev, ...rePositionedShape }));
+
+    if (isDrag) return;
+
+    setAnchor(null);
 
     elements.updateById(selectedID, rePositionedShape);
 
     setStatus((prev) => ({ ...prev, isDragging: false }));
   };
 
-  const handleRotation = (e) => {
+  const handleRotation = (e, isDrag = false) => {
     const xDiff = e.clientX - anchor.x;
     const yDiff = e.clientY - anchor.y;
 
-    const rotation = props.rotation ?? 0;
+    const rotation = anchor.shape.rotation ?? 0;
 
     const rotatedShape = {
       ...selectedShape,
-      rotation: rotation + Math.atan(yDiff / xDiff),
+      rotation: rotation + (Math.atan(yDiff / xDiff) * 180) / Math.PI,
     };
 
-    setAnchor(null);
-
     setSelectedShape((prev) => ({ ...prev, ...rotatedShape }));
+
+    if (isDrag) return;
+
+    setAnchor(null);
 
     elements.updateById(selectedID, rotatedShape);
 
@@ -184,13 +195,15 @@ export const ShapeRenderer = ({ type, ...props }) => {
               style={{ top: FULL, left: FULL }}
               draggable
               onDragStart={handleDragStart}
-              onDragEnd={(e) => handleDragEnd(e, "xy", "xy")}
+              onDrag={(e) => handleDragEnd(e, "xy", true)}
+              onDragEnd={(e) => handleDragEnd(e, "xy")}
             />
 
             {/* //@ Position Transform */}
             <div
               draggable
               onDragStart={handleDragStart}
+              onDrag={(e) => handleReposition(e, true)}
               onDragEnd={handleReposition}
               className="absolute left-1/2 -translate-x-5 -translate-y-8 cursor-move"
               children={<CrosshairIcon />}
@@ -200,6 +213,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
             <div
               draggable
               onDragStart={handleDragStart}
+              onDrag={(e) => handleRotation(e, true)}
               onDragEnd={handleRotation}
               className="absolute left-1/2 translate-x-5 -translate-y-8 cursor-move"
               children={<UndoIcon />}
@@ -215,6 +229,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
               }}
               draggable
               onDragStart={handleDragStart}
+              onDrag={(e) => handleDragEnd(e, "y", true)}
               onDragEnd={(e) => handleDragEnd(e, "y")}
             >
               {roundOff(portalStyles.height)}
@@ -230,6 +245,7 @@ export const ShapeRenderer = ({ type, ...props }) => {
               }}
               draggable
               onDragStart={handleDragStart}
+              onDrag={(e) => handleDragEnd(e, "x", true)}
               onDragEnd={(e) => handleDragEnd(e, "x")}
             >
               {roundOff(portalStyles.width)}

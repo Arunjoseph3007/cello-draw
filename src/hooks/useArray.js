@@ -58,7 +58,7 @@ export const useArray = () => {
   const remove = (i) => {
     const id = array[i].id;
 
-    if (id === selectedShape.id) {
+    if (id === selectedShape?.id) {
       setSelectedShape(null);
     }
 

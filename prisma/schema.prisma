@@ -12,6 +12,7 @@ datasource db {
 
 model User {
   id           String    @id @default(uuid())
+  email        String    @unique
   name         String
   photoUrl     String
   projects     Project[]
@@ -48,5 +49,5 @@ model Like {
   userId   String
   widgetId String
 
-  @@id([userId,widgetId])
+  @@id([userId, widgetId])
 }
