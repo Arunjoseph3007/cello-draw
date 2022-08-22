@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 export const LINE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
 
     //For first touch
     if (!newShape) {
@@ -28,7 +28,7 @@ export const LINE = {
   onMouseMove: ({ e, position, newShape, setNewShape, elements }) => {
     if (!newShape) return;
 
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
     setNewShape((prev) => ({ ...prev, x2: x, y2: y }));
   },
 };

@@ -15,7 +15,7 @@ import { AuthContext } from "@/context/authContext";
 
 import Link from "next/link";
 
-const Topbar = ({ mode, setMode, elements }) => {
+const Topbar = ({ mode, setMode, elements, project }) => {
   const buttons = [
     { title: "LINE", icon: <LineIcon /> },
     { title: "CIRCLE", icon: <CircleIcon /> },
@@ -31,6 +31,7 @@ const Topbar = ({ mode, setMode, elements }) => {
 
   return (
     <div className="flex justify-between items-center shadow-md px-4 bg-black text-white">
+      {/* //? Tools */}
       <div className="flex gap-5">
         {buttons.map((btn, i) => (
           <button
@@ -44,7 +45,11 @@ const Topbar = ({ mode, setMode, elements }) => {
           </button>
         ))}
       </div>
-      <h1>{mode}</h1>
+
+      {/* //? Midddle */}
+      {project ? <h1>{project.name}</h1> : <h1>{mode}</h1>}
+
+      {/* //? Undo/Redo..... */}
       <div className="flex gap-3">
         <button onClick={elements.clear} className="p-3 hover:bg-blue-400">
           <CloseIcon />
@@ -88,7 +93,10 @@ const Topbar = ({ mode, setMode, elements }) => {
             </div>
           </div>
         ) : (
-          <button className="btn btn-primary rounded-none" onClick={auth.signIn}>
+          <button
+            className="btn btn-primary rounded-none"
+            onClick={auth.signIn}
+          >
             Sign In
           </button>
         )}

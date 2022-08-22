@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 export const RECTANGLE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
 
     //For first touch
     if (!newShape) {
@@ -41,7 +41,8 @@ export const RECTANGLE = {
   onMouseMove: ({ e, position, newShape, setNewShape, elements }) => {
     if (!newShape) return;
 
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
+
     setNewShape((prev) => {
       let newX = min(x, prev.origin.x);
       let newY = min(y, prev.origin.y);

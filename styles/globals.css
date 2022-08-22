@@ -11,7 +11,7 @@
 }
 
 /* CUSTOM SCROLL BAR */
-body{
+body {
   overflow: overlay;
 }
 ::-webkit-scrollbar {
@@ -81,4 +81,8 @@ body{
     cursor-pointer
     transition;
   } */
+}
+
+#main-canvas {
+  box-shadow: 2px 2px 10px #0000006d, -2px -2px 10px #dddddd;
 }

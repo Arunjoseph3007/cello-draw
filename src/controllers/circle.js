@@ -1,14 +1,14 @@
 import { getDistance } from "@/utils/getDistance";
-import {v4} from 'uuid'
+import { v4 } from "uuid";
 
 export const CIRCLE = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
 
     //For first touch
     if (!newShape) {
-      setNewShape({ cx: x, cy: y, r: 0, type: "CIRCLE", status: 1 ,id:v4()});
+      setNewShape({ cx: x, cy: y, r: 0, type: "CIRCLE", status: 1, id: v4() });
     }
 
     //For second touch
@@ -25,12 +25,10 @@ export const CIRCLE = {
   onMouseMove: ({ e, position, newShape, setNewShape, elements }) => {
     if (!newShape) return;
 
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
     setNewShape((prev) => ({
       ...prev,
       r: getDistance(prev.cx, prev.cy, x, y),
     }));
   },
 };
-
-

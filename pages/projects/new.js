@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 export default function NewProjects() {
@@ -16,8 +17,23 @@ export default function NewProjects() {
   };
 
   //@ submit handler
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (err) return;
+
+    try {
+      const response = await axios.post("/api/projects/new", {
+        name,
+        description,
+      });
+
+      const project = response.data;
+
+      console.log(project);
+    } catch (error) {
+      setErr(error);
+    }
   };
 
   //$ UI

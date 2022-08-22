@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 export const FREEHAND = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
 
     //For first touch
     if (!newShape) {
@@ -30,7 +30,7 @@ export const FREEHAND = {
   onMouseMove: ({ e, position, newShape, setNewShape, elements }) => {
     if (!newShape) return;
 
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
     setNewShape((prev) => ({
       ...prev,
       points: [...prev.points, { x, y }],

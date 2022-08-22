@@ -3,9 +3,12 @@ export const MOVE = {
     //Get the positon
     const [x, y] = [e.clientX - position.x, e.clientY - position.y];
 
-
     if (!position.engaged) {
-      setPosition((prev) => ({ ...prev, engaged: true, anchor: { x, y } }));
+      setPosition((prev) => ({
+        ...prev,
+        engaged: true,
+        anchor: { x, y, initial: { x: prev.panX, y: prev.panY } },
+      }));
     } else {
       setPosition((prev) => ({ ...prev, engaged: false, anchor: null }));
     }
@@ -18,8 +21,8 @@ export const MOVE = {
 
     setPosition((prev) => ({
       ...prev,
-      panX: x - prev.anchor.x,
-      panY: y - prev.anchor.y,
+      panX: prev.anchor.initial.x + x - prev.anchor.x,
+      panY: prev.anchor.initial.y + y - prev.anchor.y,
     }));
   },
 };

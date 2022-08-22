@@ -6,21 +6,35 @@ import Rightbar from "@/components/Rightbar";
 import Topbar from "@/components/Topbar";
 //Hooks
 import { useArray } from "@/hooks/useArray";
+import { useRouter } from "next/router";
 //Third party libs
 import { useRecoilState } from "recoil";
 import { useDeferredValue, useEffect, useState } from "react";
+import axios from "axios";
+import { prisma } from "@/lib/prisma";
 //States
 import { modeAtom } from "@/context/mode";
 import { selectedShapeAtom } from "@/context/selectedShape";
 import { selectedIDAtom } from "@/context/selectedID";
+import { verify } from "@/lib/jwt";
 
-export default function Home() {
+export default function Home({ project }) {
   const elements = useArray();
   const [mode, setMode] = useRecoilState(modeAtom);
   const [selectedID, setSelectedID] = useRecoilState(selectedIDAtom);
   const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
   const deferredSelectedShape = useDeferredValue(selectedShape);
 
+  const router = useRouter();
+  const { projectId } = router.query;
+
+  //$ Start up
+  useEffect(() => {
+    console.log(project);
+    elements.setData(project.data);
+  }, []);
+
+  //$ Reacting to selected id change
   useEffect(() => {
     if (selectedID === -1) return;
 
@@ -29,7 +43,7 @@ export default function Home() {
 
   const updateWithSelecctedShape = () => {
     if (!selectedShape || !deferredSelectedShape) return;
-    
+
     elements.updateById(deferredSelectedShape.id, deferredSelectedShape);
   };
 
@@ -41,7 +55,12 @@ export default function Home() {
         <meta name="description" content="A handy drawing app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Topbar mode={mode} setMode={setMode} elements={elements} />
+      <Topbar
+        project={project}
+        mode={mode}
+        setMode={setMode}
+        elements={elements}
+      />
       <div className="flex-1 flex justify-between overflow-hidden">
         <Leftbar
           selectedID={selectedID}
@@ -58,3 +77,52 @@ export default function Home() {
     </div>
   );
 }
+
+//$ Fetch
+export const getServerSideProps = async ({ req, res, params }) => {
+  const { projectId } = params;
+
+  const user = await verify(req.cookies.token);
+
+  try {
+    const project = await prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+      select: {
+        name: true,
+        description: true,
+        data: true,
+        userId: true,
+        user: {
+          select: {
+            name: true,
+            photoUrl: true,
+          },
+        },
+      },
+    });
+
+    if (user.id !== project.userId) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {
+        project,
+      },
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+};

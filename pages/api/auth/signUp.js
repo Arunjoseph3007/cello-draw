@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import { setCookie } from "cookies-next";
+import { sign } from "@/lib/jwt";
 
 export default async function registerUser(req, res) {
   const { email, id, photoUrl, name } = req.body;
-
-  console.log('hey')
 
   try {
     const user = await prisma.user.findUnique({
@@ -13,6 +13,10 @@ export default async function registerUser(req, res) {
     });
 
     if (user) {
+      const token = await sign({ name: user.name, id: user.id });
+
+      setCookie("token", token, { req, res, httpOnly: true });
+
       return res.status(200).json({ user });
     }
 
@@ -26,10 +30,13 @@ export default async function registerUser(req, res) {
     });
 
     if (newUser) {
+      const token = sign({ name: newUser.name, id: newUser.id });
+      setCookie("token", token, { httpOnly: true });
+
       return res.status(200).json({ user: newUser });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(400).json({ error });
   }
 }

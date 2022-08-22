@@ -12,7 +12,8 @@ const ARRAY_OF_SHAPES = [
 export const GROUP = {
   onMouseDown: ({ e, position, newShape, setNewShape, elements }) => {
     //Get the positon
-    const [x, y] = [e.clientX - position.x, e.clientY - position.y];
+    const [x, y] = [position.x, position.y];
+
 
     // Ensure that the click is on a svg element
     if (!ARRAY_OF_SHAPES.includes(e.target.tagName)) return;

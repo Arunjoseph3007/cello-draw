@@ -45,25 +45,35 @@ const Panel = ({ elements, mode }) => {
     setNewShape(null);
   };
 
-  // For setting the position
+  //@ Adjust the position according to panning and zoom
+  const adjustPosition = (e) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+
+    const x = (position.width / rect.width) * (e.clientX - rect.left);
+    const y = (position.height / rect.height) * (e.clientY - rect.top);
+
+    return { x, y };
+  };
+
+  //@ For setting the position
   useEffect(() => {
     handleResize();
   }, []);
 
-  // For checking if it is a click or a drag
+  //@ For checking if it is a click or a drag
   useEffect(() => {
     if (status.isDragging) {
       setNewShape(null);
     }
   }, [status]);
 
-  //When the mode is changed reset the new shape
+  //@ When the mode is changed reset the new shape
   useEffect(() => setNewShape(null), [mode]);
 
-  // To set the newShape when ESC is pressed
+  //@ To set the newShape when ESC is pressed
   useHotkeys("Escape", (e) => escapeShape());
 
-  // To match any resizing
+  //@ To match any resizing
   useEventListener("resize", handleResize);
 
   useEventListener("mousewheel", (e) => {
@@ -76,20 +86,16 @@ const Panel = ({ elements, mode }) => {
     }
   });
 
-  // To update the position on mouse movement
+  //$ To update the position on mouse movement
   const handleMouseMove = (e) => {
     if (status.isDragging) return;
 
     if (mode === "MOVE") {
       controller.onMouseMove({ e, position, setPosition });
     } else {
-      const adjustedPosition = {
-        x: (position.x + position.panX) * position.zoom,
-        y: (position.y + position.panY) * position.zoom,
-      };
       controller.onMouseMove({
         e,
-        position: adjustedPosition,
+        position: adjustPosition(e),
         newShape,
         setNewShape,
         elements,
@@ -97,7 +103,7 @@ const Panel = ({ elements, mode }) => {
     }
   };
 
-  //Handle mouse clicks
+  //$ Handle mouse clicks
   const handleMouseDown = (e) => {
     if (status.isDragging) return;
 
@@ -107,13 +113,9 @@ const Panel = ({ elements, mode }) => {
     if (mode === "MOVE") {
       controller.onMouseDown({ e, position, setPosition });
     } else {
-      const adjustedPosition = {
-        x: (position.x + position.panX) * position.zoom,
-        y: (position.y + position.panY) * position.zoom,
-      };
       controller.onMouseDown({
         e,
-        position: adjustedPosition,
+        position: adjustPosition(e),
         newShape,
         setNewShape,
         elements,
@@ -125,11 +127,12 @@ const Panel = ({ elements, mode }) => {
     <div
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
-      className="flex-1 w-full h-full dead-center relative bg-gray-300"
+      className="flex-1 w-full h-full relative bg-gray-300"
     >
       <div
         ref={canvasRef}
-        className={`canvas absolute top-1/2 left-1/2 bg-white ${
+        id="main-canvas"
+        className={`canvas absolute bg-white ${
           mode === "MOVE"
             ? position.engaged
               ? "cursor-move"
@@ -141,8 +144,8 @@ const Panel = ({ elements, mode }) => {
           width: position.width,
           transform: `
           translate(
-            ${position.panX - position.width / 2}px, 
-            ${position.panY - position.height / 2}px
+            ${position.panX}px, 
+            ${position.panY}px
           )
           scaleX(${position.zoom}) 
           scaleY(${position.zoom}) 
