@@ -1,10 +1,7 @@
-import { verify } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
 
 export default async function newProject(req, res) {
   const { name, description } = req.body;
-
-  const user = await verify(req.cookies.token);
 
   try {
     const newProject = await prisma.project.create({

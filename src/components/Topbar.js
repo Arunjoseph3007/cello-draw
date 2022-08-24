@@ -10,24 +10,23 @@ import { PathIcon } from "@/icons/Path";
 import { GroupIcon } from "@/icons/Group";
 import { MoveIcon } from "@/icons/Move";
 
-import { useContext } from "react";
-import { AuthContext } from "@/context/authContext";
-
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+
+const buttons = [
+  { title: "LINE", icon: <LineIcon /> },
+  { title: "CIRCLE", icon: <CircleIcon /> },
+  { title: "FREEHAND", icon: <FreehandIcon /> },
+  { title: "POLYGON", icon: <PolygonIcon /> },
+  { title: "RECTANGLE", icon: <RectangleIcon /> },
+  { title: "PATH", icon: <PathIcon /> },
+  { title: "GROUP", icon: <GroupIcon /> },
+  { title: "MOVE", icon: <MoveIcon /> },
+];
 
 const Topbar = ({ mode, setMode, elements, project }) => {
-  const buttons = [
-    { title: "LINE", icon: <LineIcon /> },
-    { title: "CIRCLE", icon: <CircleIcon /> },
-    { title: "FREEHAND", icon: <FreehandIcon /> },
-    { title: "POLYGON", icon: <PolygonIcon /> },
-    { title: "RECTANGLE", icon: <RectangleIcon /> },
-    { title: "PATH", icon: <PathIcon /> },
-    { title: "GROUP", icon: <GroupIcon /> },
-    { title: "MOVE", icon: <MoveIcon /> },
-  ];
-
-  const auth = useContext(AuthContext);
+  const session = useSession();
+  const user = session?.data?.user;
 
   return (
     <div className="flex justify-between items-center shadow-md px-4 bg-black text-white">
@@ -62,43 +61,37 @@ const Topbar = ({ mode, setMode, elements, project }) => {
         </button>
 
         {/* //? User info and profile pic */}
-        {auth.user ? (
+        {session.status === "authenticated" ? (
           <div className="dropdown dropdown-left flex gap-3 items-center rounded-lg px-3 cursor-pointer hover:bg-gray-600">
             <h2 tabIndex={0} className="text-md m-1">
-              {auth?.user?.user_metadata?.user_name}
+              {user.name}
             </h2>
             <img
               tabIndex={0}
               className="w-8 aspect-square rounded-full"
-              src={auth?.user?.user_metadata?.avatar_url}
+              src={user.image}
             />
             <div className="dropdown-content menu p-5 shadow bg-base-100 rounded-md flex flex-col items-center">
               <Link passHref href={"/profile"}>
                 <img
                   tabIndex={0}
                   className="w-16 aspect-square rounded-full"
-                  src={auth?.user?.user_metadata?.avatar_url}
+                  src={user.image}
                 />
               </Link>
-              <h2 className="text-xl m-1">
-                {auth?.user?.user_metadata?.user_name}
-              </h2>
-              <h2 className="text-sm m-1">{auth?.user?.email}</h2>
-              <button
-                onClick={auth.signOut}
-                className="btn btn-primary my-5 w-full"
-              >
-                Sign Out
-              </button>
+              <h2 className="text-xl m-1">{user.name}</h2>
+              <h2 className="text-sm m-1">{user.email}</h2>
+              <Link href="/api/auth/signout">
+                <button className="btn btn-primary my-5 w-full">
+                  Sign Out
+                </button>
+              </Link>
             </div>
           </div>
         ) : (
-          <button
-            className="btn btn-primary rounded-none"
-            onClick={auth.signIn}
-          >
-            Sign In
-          </button>
+          <Link href="/api/auth/signin">
+            <button className="btn btn-primary rounded-none">Sign In</button>
+          </Link>
         )}
       </div>
     </div>

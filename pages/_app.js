@@ -1,16 +1,18 @@
 import { RecoilRoot } from "recoil";
-import AuthProvider from "@/context/authContext";
 import "../styles/globals.css";
+import { SessionProvider } from "next-auth/react";
 
-function MyApp({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   return (
     <RecoilRoot>
-      <AuthProvider>
+      <SessionProvider session={session}>
         <Component {...pageProps} />
-      </AuthProvider>
+      </SessionProvider>
     </RecoilRoot>
   );
 }
 
-export default MyApp;
 // https://sazxxiuhaalmfuqhbrgc.supabase.co

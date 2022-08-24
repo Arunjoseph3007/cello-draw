@@ -1,10 +1,7 @@
-import { verify } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
 
 export default async function (req, res) {
   const { projectId } = req.query;
-
-  const user = await verify(req.cookies.token);
 
   try {
     const project = await prisma.project.findUnique({
@@ -24,10 +21,6 @@ export default async function (req, res) {
         },
       },
     });
-
-    if (user.id !== project.userId) {
-      return res.status(400).json({ error: "Not authorized" });
-    }
 
     res.status(200).json({ project });
   } catch (error) {
