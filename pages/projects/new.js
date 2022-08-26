@@ -1,10 +1,12 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function NewProjects() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [err, setErr] = useState(null);
+  const router = useRouter();
 
   //@ Chnage handler
   const handleChange = (e) => {
@@ -28,9 +30,9 @@ export default function NewProjects() {
         description,
       });
 
-      const project = response.data;
-
+      const { project } = response.data;
       console.log(project);
+      router.push(`/projects/${project.id}`);
     } catch (error) {
       setErr(error);
     }

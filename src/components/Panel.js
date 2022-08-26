@@ -132,7 +132,7 @@ const Panel = ({ elements, mode }) => {
       <div
         ref={canvasRef}
         id="main-canvas"
-        className={`canvas absolute bg-white ${
+        className={`canvas left-1/2 top-1/2 absolute bg-white ${
           mode === "MOVE"
             ? position.engaged
               ? "cursor-move"
@@ -144,8 +144,8 @@ const Panel = ({ elements, mode }) => {
           width: position.width,
           transform: `
           translate(
-            ${position.panX}px, 
-            ${position.panY}px
+            ${position.panX - position.width / 2}px, 
+            ${position.panY - position.height / 2}px
           )
           scaleX(${position.zoom}) 
           scaleY(${position.zoom}) 

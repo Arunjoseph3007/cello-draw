@@ -16,7 +16,9 @@ import { prisma } from "@/lib/prisma";
 import { modeAtom } from "@/context/mode";
 import { selectedShapeAtom } from "@/context/selectedShape";
 import { selectedIDAtom } from "@/context/selectedID";
-import { verify } from "@/lib/jwt";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "pages/api/auth/[...nextauth]";
+import { ToastContainer } from "react-toastify";
 
 export default function Home({ project }) {
   const elements = useArray();
@@ -50,6 +52,7 @@ export default function Home({ project }) {
   // U I
   return (
     <div className="h-screen flex flex-col">
+      <ToastContainer position="bottom-right" />
       <Head>
         <title>Cello Draw</title>
         <meta name="description" content="A handy drawing app" />
@@ -82,7 +85,7 @@ export default function Home({ project }) {
 export const getServerSideProps = async ({ req, res, params }) => {
   const { projectId } = params;
 
-  const user = await verify(req.cookies.token);
+  const { user } = await unstable_getServerSession(req, res, authOptions);
 
   try {
     const project = await prisma.project.findUnique({
@@ -94,10 +97,11 @@ export const getServerSideProps = async ({ req, res, params }) => {
         description: true,
         data: true,
         userId: true,
+        id: true,
         user: {
           select: {
             name: true,
-            photoUrl: true,
+            image: true,
           },
         },
       },
