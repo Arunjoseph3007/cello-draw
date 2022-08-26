@@ -46,10 +46,10 @@ export const ShapeRenderer = ({ type, ...props }) => {
   const elements = useArray();
   const [anchor, setAnchor] = useState(null);
 
+  const shapeRef = useRef();
+
   //@ Basic safety
   if (!type) return;
-
-  const shapeRef = useRef();
 
   let portalStyles = shapeRef?.current?.getBoundingClientRect() || DEFAULT_BOX;
 
@@ -220,8 +220,9 @@ export const ShapeRenderer = ({ type, ...props }) => {
               onDrag={(e) => handleReposition(e, true)}
               onDragEnd={handleReposition}
               className="absolute left-1/2 -translate-x-5 -translate-y-8 cursor-move"
-              children={<CrosshairIcon />}
-            />
+            >
+              <CrosshairIcon />
+            </div>
 
             {/* //@ Rotation Transform */}
             <div
@@ -230,8 +231,9 @@ export const ShapeRenderer = ({ type, ...props }) => {
               onDrag={(e) => handleRotation(e, true)}
               onDragEnd={handleRotation}
               className="absolute left-1/2 translate-x-5 -translate-y-8 cursor-move"
-              children={<UndoIcon />}
-            />
+            >
+              <UndoIcon />
+            </div>
 
             {/* //@ Height resize */}
             <div
