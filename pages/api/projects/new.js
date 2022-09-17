@@ -3,8 +3,8 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 
 export default async function newProject(req, res) {
-  console.log('hey');
-  const { name, description } = req.body;
+  let { name, description, data } = req.body;
+  data = data || [];
   const session = await unstable_getServerSession(req, res, authOptions);
   const { user } = session;
 
@@ -14,7 +14,7 @@ export default async function newProject(req, res) {
         name,
         description,
         userId: user.id,
-        data: [],
+        data,
       },
     });
 

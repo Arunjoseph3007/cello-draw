@@ -30,6 +30,18 @@ export default function Home({ project }) {
   const router = useRouter();
   const { projectId } = router.query;
 
+  //$ Save data
+  const handleSave = async () => {
+    try {
+      await axios.post(`/api/projects/${project.id}/save`, {
+        data: elements.data,
+      });
+      toast.success("Saved succesfully");
+    } catch (e) {
+      toast.error("Couldnt save somthing went wrong");
+    }
+  };
+
   //$ Start up
   useEffect(() => {
     console.log(project);
@@ -54,7 +66,7 @@ export default function Home({ project }) {
     <div className="h-screen flex flex-col">
       <ToastContainer position="bottom-right" />
       <Head>
-        <title>Cello Draw</title>
+        <title>{project.name}</title>
         <meta name="description" content="A handy drawing app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -63,6 +75,7 @@ export default function Home({ project }) {
         mode={mode}
         setMode={setMode}
         elements={elements}
+        handleSave={handleSave}
       />
       <div className="flex-1 flex justify-between overflow-hidden">
         <Leftbar

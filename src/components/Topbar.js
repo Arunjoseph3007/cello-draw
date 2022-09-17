@@ -14,7 +14,8 @@ import { SaveIcon } from "@/icons/Save";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { useHotkeys } from "@/hooks/useHotkeys";
 
 const buttons = [
   { title: "LINE", icon: <LineIcon /> },
@@ -27,22 +28,14 @@ const buttons = [
   { title: "MOVE", icon: <MoveIcon /> },
 ];
 
-const Topbar = ({ mode, setMode, elements, project }) => {
+const Topbar = ({ mode, setMode, elements, project, handleSave }) => {
   const session = useSession();
   const user = session?.data?.user;
 
-  //$ Save data
-  const handleSave = async () => {
-    console.log(project);
-    try {
-      await axios.post(`/api/projects/${project.id}/save`, {
-        data: elements.data,
-      });
-      toast.success("Saved succesfully");
-    } catch (e) {
-      toast.error("Couldnt save somthing went wrong");
-    }
-  };
+  useHotkeys("ctrl+s", (e) => {
+    e.preventDefault();
+    handleSave();
+  });
 
   return (
     <div className="flex justify-between items-center shadow-md px-4 bg-black text-white">
@@ -62,7 +55,7 @@ const Topbar = ({ mode, setMode, elements, project }) => {
       </div>
 
       {/* //? Midddle */}
-      {project ? <h1>{project.name}</h1> : <h1>{mode}</h1>}
+      <h1>{mode}</h1>
 
       {/* //? Undo/Redo..... */}
       <div className="flex gap-3">
@@ -75,11 +68,9 @@ const Topbar = ({ mode, setMode, elements, project }) => {
         <button onClick={elements.redo} className="p-3 hover:bg-blue-400">
           <RedoIcon />
         </button>
-        {project && (
-          <button onClick={handleSave} className="p-3 hover:bg-blue-400">
-            <SaveIcon />
-          </button>
-        )}
+        <button onClick={handleSave} className="p-3 hover:bg-blue-400">
+          <SaveIcon />
+        </button>
 
         {/* //? User info and profile pic */}
         {session.status === "authenticated" ? (
