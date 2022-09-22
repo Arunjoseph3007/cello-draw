@@ -7,17 +7,16 @@ import { FREEHAND } from "@/controllers/freehand";
 import { POLYGON } from "@/controllers/polygon";
 import { RECTANGLE } from "@/controllers/rectangle";
 import { PATH } from "@/controllers/path";
-import { GROUP } from "@/controllers/group";
 import { MOVE } from "@/controllers/move";
-
+import {SELECT} from "@/controllers/selection"
 const controllers = {
   LINE,
   CIRCLE,
   FREEHAND,
   POLYGON,
   RECTANGLE,
+  SELECT,
   PATH,
-  GROUP,
   MOVE,
 };
 

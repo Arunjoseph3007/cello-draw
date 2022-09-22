@@ -16,6 +16,8 @@ import { useArray } from "@/hooks/useArray";
 import { statusAtom } from "@/context/status";
 import { CrosshairIcon } from "@/icons/Crosshair";
 import { UndoIcon } from "@/icons/Undo";
+import { newShapeAtom } from "@/context/newShape";
+import { selectedShapesArrayAtom } from "@/context/selectedShapesArray";
 
 const NONE = 0,
   FULL = "100%",
@@ -39,11 +41,19 @@ const Renderers = {
   GROUP: GroupRenderer,
 };
 
+const checkIfBounding = (shape, selection) => {
+  true;
+};
+
 export const ShapeRenderer = ({ type, ...props }) => {
   const [selectedID, setSelectedID] = useRecoilState(selectedIDAtom);
   const [selectedShape, setSelectedShape] = useRecoilState(selectedShapeAtom);
   const [status, setStatus] = useRecoilState(statusAtom);
+  const [newShape, setNewShape] = useRecoilState(newShapeAtom);
   const elements = useArray();
+  const [selectedShapesArray, setSelectedShapesArray] = useRecoilState(
+    selectedShapesArrayAtom
+  );
   const [anchor, setAnchor] = useState(null);
 
   const shapeRef = useRef();
@@ -52,6 +62,18 @@ export const ShapeRenderer = ({ type, ...props }) => {
   if (!type) return;
 
   let portalStyles = shapeRef?.current?.getBoundingClientRect() || DEFAULT_BOX;
+
+  //$ For group selection
+  useEffect(() => {
+    if (!newShape?.isTemporaryForSelection) return;
+
+    if (
+      checkIfBounding(portalStyles, newShape) &&
+      !selectedShapesArray.includes(props.id)
+    ) {
+      setSelectedShapesArray((prev) => [...prev, props.id]);
+    }
+  }, [newShape]);
 
   //$ handles all drag start events
   const handleDragStart = (e) => {
@@ -179,7 +201,9 @@ export const ShapeRenderer = ({ type, ...props }) => {
         stroke={props.stroke || "#000000"}
         strokeWidth={props.strokeWidth || 2}
       />
-      {(selectedID === props.id || props.highlighted) && (
+      {(selectedID === props.id ||
+        props.highlighted ||
+        selectedShapesArray.includes(props.id)) && (
         <Portal selector="#portal">
           {/* //@ Selection box */}
           <div

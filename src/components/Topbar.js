@@ -7,15 +7,13 @@ import { RedoIcon } from "@/icons/Redo";
 import { CloseIcon } from "@/icons/Close";
 import { RectangleIcon } from "@/icons/Rectangle";
 import { PathIcon } from "@/icons/Path";
-import { GroupIcon } from "@/icons/Group";
 import { MoveIcon } from "@/icons/Move";
 import { SaveIcon } from "@/icons/Save";
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import axios from "axios";
-import { toast } from "react-toastify";
 import { useHotkeys } from "@/hooks/useHotkeys";
+import { SelectionIcon } from "@/icons/Selection";
 
 const buttons = [
   { title: "LINE", icon: <LineIcon /> },
@@ -24,7 +22,7 @@ const buttons = [
   { title: "POLYGON", icon: <PolygonIcon /> },
   { title: "RECTANGLE", icon: <RectangleIcon /> },
   { title: "PATH", icon: <PathIcon /> },
-  { title: "GROUP", icon: <GroupIcon /> },
+  { title: "SELECT", icon: <SelectionIcon /> },
   { title: "MOVE", icon: <MoveIcon /> },
 ];
 
@@ -38,14 +36,15 @@ const Topbar = ({ mode, setMode, elements, project, handleSave }) => {
   });
 
   return (
-    <div className="flex justify-between items-center shadow-md px-4 bg-black text-white">
+    <div className="flex justify-between z-10 items-center shadow-md px-4 bg-black text-white">
       {/* //? Tools */}
       <div className="flex gap-5">
         {buttons.map((btn, i) => (
           <button
             key={i}
+            data-tip={btn.title}
             onClick={() => setMode(btn.title)}
-            className={`p-3 hover:bg-blue-400 transition ${
+            className={`tooltip tooltip-bottom tooltip-primary p-3 hover:bg-blue-400 transition ${
               mode === btn.title && "text-black bg-blue-400"
             }`}
           >
